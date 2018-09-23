@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xml:lang="en">
+	<head>
+        <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.7" />
+		<title><%section name="pageTitle"%></title>
+        <link rel="stylesheet" href="theme/basic-gu.css" type="text/css"/><style>
+        <%section name="ExtraCSS"%>
+        </style>
+        <%section name="scriptIncludes"%>
+        <%scripts%>
+	</head>
+    <body <%section name="bodyAttributes"%>>
+    <div id="outerContainer">
+        <div id="pageHeader">
+            <%section name="homeLink"%>
+        </div>
+        <div id="innerContainerFrame">
+            <div id="innerContainer">
+                <div id="leftOuter">
+                    <div id="leftOuterContainer">
+                        <div id="leftContainer">
+                            <%section name="loginBox"%>
+                            <%section name="leftFull" div_id="leftFull"%>
+                        </div>
+                    </div>
+                </div>
+                <div id="mainOuterContainer">
+                    <div id="mainContainer">
+                        <div id="mainInnerContainer">
+                            <div id="mainContainerFrame">
+                                <%if defined="toolbar"%>
+                                <div id="toolbarFrame">
+                                    <div id="toolbar">
+                                        <%section name="toolbar"%>
+                                    </div>
+                                </div>
+                                <%end%>
+                                <div id="mainAreaFrame">
+                                    <div id="mainAreaContainer">
+                                        <div id="mainArea">
+                                            <%section name="mainInfo" div_id="mainInfo"%>
+                                            <%section name="main"%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%if defined="rightFull rightUpper rightLower"%>
+                <div id="rightOuter"<%if defined="rightHidden"%> style="display:none;"<%end%>>
+						<div id="rightOuterContainer">
+							<div id="rightContainer">
+                                <%section name="rightFull" div_id="rightFull"%>
+                                <%section name="rightUpper" div_id="rightUpper"%>
+                                <%section name="rightLower" div_id="rightLower"%>
+                            </div>
+						</div>
+					</div>
+                <%end%>
+            </div>
+        </div>
+    </div>
+    <div class='formsurround' id='toolbarForm_surround'>
+        <div class='hiddenFill' id='toolbarForm_fill'></div>
+        <div class='popup' id='toolbarForm_form'>
+            <div id='toolbarForm'></div>
+        </div>
+    </div>
+    <script type='text/javascript' defer='defer'>
+        <%section name="scriptStart"%>
+    </script>
+    <script type='text/python'>
+        <%section name="brythonStart"%>
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+"build_systems":
+    [
+        {
+            "name": "View on Localhost",
+            "shell_cmd": "firefox http://localhost/notebookview/"
+        }
+    ]
+}

@@ -1,0 +1,129 @@
+FeatureCode,DateCode,Measurement,Units,Value,Tourism Activity,Breakdown of Domestic Tourism
+S92000003,2016,Count,million pounds (GBP),69,"Day out to a beauty/health centre/spa, etc.",Expenditure
+S92000003,2014,Count,Million Visits,2,"Day out to a beauty/health centre/spa, etc.",Visits
+S92000003,2014,Count,million pounds (GBP),71,"Day out to a beauty/health centre/spa, etc.",Expenditure
+S92000003,2016,Count,Million Visits,2,"Day out to a beauty/health centre/spa, etc.",Visits
+S92000003,2013,Count,Million Visits,1,"Day out to a beauty/health centre/spa, etc.",Visits
+S92000003,2015,Count,million pounds (GBP),87,"Day out to a beauty/health centre/spa, etc.",Expenditure
+S92000003,2015,Count,Million Visits,2,"Day out to a beauty/health centre/spa, etc.",Visits
+S92000003,2013,Count,million pounds (GBP),145,"Day out to a beauty/health centre/spa, etc.",Expenditure
+S92000003,2016,Count,million pounds (GBP),261,Leisure activities e.g. hobbies & evening classes,Expenditure
+S92000003,2013,Count,Million Visits,6,Leisure activities e.g. hobbies & evening classes,Visits
+S92000003,2015,Count,million pounds (GBP),264,Leisure activities e.g. hobbies & evening classes,Expenditure
+S92000003,2014,Count,Million Visits,8,Leisure activities e.g. hobbies & evening classes,Visits
+S92000003,2015,Count,Million Visits,10,Leisure activities e.g. hobbies & evening classes,Visits
+S92000003,2016,Count,Million Visits,9,Leisure activities e.g. hobbies & evening classes,Visits
+S92000003,2014,Count,million pounds (GBP),469,Leisure activities e.g. hobbies & evening classes,Expenditure
+S92000003,2013,Count,million pounds (GBP),147,Leisure activities e.g. hobbies & evening classes,Expenditure
+S92000003,2016,Count,Million Visits,13,"Entertainment - to a cinema, concert or theatre",Visits
+S92000003,2016,Count,million pounds (GBP),604,"Entertainment - to a cinema, concert or theatre",Expenditure
+S92000003,2015,Count,Million Visits,12,"Entertainment - to a cinema, concert or theatre",Visits
+S92000003,2013,Count,Million Visits,11,"Entertainment - to a cinema, concert or theatre",Visits
+S92000003,2014,Count,Million Visits,12,"Entertainment - to a cinema, concert or theatre",Visits
+S92000003,2014,Count,million pounds (GBP),469,"Entertainment - to a cinema, concert or theatre",Expenditure
+S92000003,2015,Count,million pounds (GBP),593,"Entertainment - to a cinema, concert or theatre",Expenditure
+S92000003,2013,Count,million pounds (GBP),474,"Entertainment - to a cinema, concert or theatre",Expenditure
+S92000003,2013,Count,Million Visits,11,"Visitor attraction e.g. theme park, museum, zoo",Visits
+S92000003,2013,Count,million pounds (GBP),414,"Visitor attraction e.g. theme park, museum, zoo",Expenditure
+S92000003,2016,Count,Million Visits,13,"Visitor attraction e.g. theme park, museum, zoo",Visits
+S92000003,2014,Count,Million Visits,11,"Visitor attraction e.g. theme park, museum, zoo",Visits
+S92000003,2014,Count,million pounds (GBP),462,"Visitor attraction e.g. theme park, museum, zoo",Expenditure
+S92000003,2016,Count,million pounds (GBP),378,"Visitor attraction e.g. theme park, museum, zoo",Expenditure
+S92000003,2015,Count,Million Visits,11,"Visitor attraction e.g. theme park, museum, zoo",Visits
+S92000003,2015,Count,million pounds (GBP),345,"Visitor attraction e.g. theme park, museum, zoo",Expenditure
+S92000003,2013,Count,million pounds (GBP),699,"Outdoor leisure activities e.g. walking, golf",Expenditure
+S92000003,2014,Count,Million Visits,22,"Outdoor leisure activities e.g. walking, golf",Visits
+S92000003,2015,Count,million pounds (GBP),647,"Outdoor leisure activities e.g. walking, golf",Expenditure
+S92000003,2016,Count,million pounds (GBP),826,"Outdoor leisure activities e.g. walking, golf",Expenditure
+S92000003,2016,Count,Million Visits,30,"Outdoor leisure activities e.g. walking, golf",Visits
+S92000003,2013,Count,Million Visits,22,"Outdoor leisure activities e.g. walking, golf",Visits
+S92000003,2015,Count,Million Visits,24,"Outdoor leisure activities e.g. walking, golf",Visits
+S92000003,2014,Count,million pounds (GBP),571,"Outdoor leisure activities e.g. walking, golf",Expenditure
+S92000003,2015,Count,Million Visits,5,"Special personal events e.g. wedding, graduation",Visits
+S92000003,2014,Count,million pounds (GBP),223,"Special personal events e.g. wedding, graduation",Expenditure
+S92000003,2013,Count,Million Visits,4,"Special personal events e.g. wedding, graduation",Visits
+S92000003,2014,Count,Million Visits,4,"Special personal events e.g. wedding, graduation",Visits
+S92000003,2013,Count,million pounds (GBP),85,"Special personal events e.g. wedding, graduation",Expenditure
+S92000003,2015,Count,million pounds (GBP),142,"Special personal events e.g. wedding, graduation",Expenditure
+S92000003,2016,Count,million pounds (GBP),273,"Special personal events e.g. wedding, graduation",Expenditure
+S92000003,2016,Count,Million Visits,5,"Special personal events e.g. wedding, graduation",Visits
+S92000003,2014,Count,million pounds (GBP),892,"Night out to a bar, pub and/or club",Expenditure
+S92000003,2013,Count,million pounds (GBP),840,"Night out to a bar, pub and/or club",Expenditure
+S92000003,2016,Count,Million Visits,20,"Night out to a bar, pub and/or club",Visits
+S92000003,2015,Count,million pounds (GBP),876,"Night out to a bar, pub and/or club",Expenditure
+S92000003,2015,Count,Million Visits,19,"Night out to a bar, pub and/or club",Visits
+S92000003,2014,Count,Million Visits,20,"Night out to a bar, pub and/or club",Visits
+S92000003,2016,Count,million pounds (GBP),973,"Night out to a bar, pub and/or club",Expenditure
+S92000003,2013,Count,Million Visits,18,"Night out to a bar, pub and/or club",Visits
+S92000003,2014,Count,Million Visits,17,Shopping for items that you do not regularly buy,Visits
+S92000003,2016,Count,Million Visits,18,Shopping for items that you do not regularly buy,Visits
+S92000003,2015,Count,million pounds (GBP),1033,Shopping for items that you do not regularly buy,Expenditure
+S92000003,2013,Count,Million Visits,15,Shopping for items that you do not regularly buy,Visits
+S92000003,2015,Count,Million Visits,16,Shopping for items that you do not regularly buy,Visits
+S92000003,2016,Count,million pounds (GBP),1380,Shopping for items that you do not regularly buy,Expenditure
+S92000003,2013,Count,million pounds (GBP),1512,Shopping for items that you do not regularly buy,Expenditure
+S92000003,2014,Count,million pounds (GBP),1536,Shopping for items that you do not regularly buy,Expenditure
+S92000003,2014,Count,Million Visits,31,Went out for a meal,Visits
+S92000003,2015,Count,million pounds (GBP),1631,Went out for a meal,Expenditure
+S92000003,2016,Count,million pounds (GBP),1892,Went out for a meal,Expenditure
+S92000003,2013,Count,Million Visits,29,Went out for a meal,Visits
+S92000003,2014,Count,million pounds (GBP),1966,Went out for a meal,Expenditure
+S92000003,2015,Count,Million Visits,35,Went out for a meal,Visits
+S92000003,2016,Count,Million Visits,36,Went out for a meal,Visits
+S92000003,2013,Count,million pounds (GBP),1675,Went out for a meal,Expenditure
+S92000003,2015,Count,Million Visits,12,Watched live sporting events (not on TV),Visits
+S92000003,2015,Count,million pounds (GBP),400,Watched live sporting events (not on TV),Expenditure
+S92000003,2016,Count,Million Visits,12,Watched live sporting events (not on TV),Visits
+S92000003,2014,Count,Million Visits,9,Watched live sporting events (not on TV),Visits
+S92000003,2016,Count,million pounds (GBP),469,Watched live sporting events (not on TV),Expenditure
+S92000003,2013,Count,million pounds (GBP),243,Watched live sporting events (not on TV),Expenditure
+S92000003,2013,Count,Million Visits,8,Watched live sporting events (not on TV),Visits
+S92000003,2014,Count,million pounds (GBP),421,Watched live sporting events (not on TV),Expenditure
+S92000003,2014,Count,million pounds (GBP),5020,All,Expenditure
+S92000003,2016,Count,million pounds (GBP),4916,All,Expenditure
+S92000003,2015,Count,million pounds (GBP),3922,All,Expenditure
+S92000003,2013,Count,million pounds (GBP),4647,All,Expenditure
+S92000003,2013,Count,Million Visits,124,All,Visits
+S92000003,2015,Count,Million Visits,124,All,Visits
+S92000003,2016,Count,Million Visits,142,All,Visits
+S92000003,2014,Count,Million Visits,127,All,Visits
+S92000003,2014,Count,million pounds (GBP),1376,Visited friends or family for leisure,Expenditure
+S92000003,2016,Count,million pounds (GBP),1158,Visited friends or family for leisure,Expenditure
+S92000003,2015,Count,million pounds (GBP),1186,Visited friends or family for leisure,Expenditure
+S92000003,2013,Count,million pounds (GBP),1065,Visited friends or family for leisure,Expenditure
+S92000003,2014,Count,Million Visits,41,Visited friends or family for leisure,Visits
+S92000003,2013,Count,Million Visits,41,Visited friends or family for leisure,Visits
+S92000003,2015,Count,Million Visits,46,Visited friends or family for leisure,Visits
+S92000003,2016,Count,Million Visits,44,Visited friends or family for leisure,Visits
+S92000003,2015,Count,Million Visits,18,General day out/ to explore an area,Visits
+S92000003,2013,Count,million pounds (GBP),528,General day out/ to explore an area,Expenditure
+S92000003,2016,Count,million pounds (GBP),806,General day out/ to explore an area,Expenditure
+S92000003,2016,Count,Million Visits,19,General day out/ to explore an area,Visits
+S92000003,2015,Count,million pounds (GBP),506,General day out/ to explore an area,Expenditure
+S92000003,2014,Count,million pounds (GBP),715,General day out/ to explore an area,Expenditure
+S92000003,2014,Count,Million Visits,19,General day out/ to explore an area,Visits
+S92000003,2013,Count,Million Visits,17,General day out/ to explore an area,Visits
+S92000003,2013,Count,Million Visits,9,Day trips/excursions for other leisure purpose,Visits
+S92000003,2015,Count,Million Visits,9,Day trips/excursions for other leisure purpose,Visits
+S92000003,2014,Count,Million Visits,10,Day trips/excursions for other leisure purpose,Visits
+S92000003,2016,Count,Million Visits,12,Day trips/excursions for other leisure purpose,Visits
+S92000003,2013,Count,million pounds (GBP),312,Day trips/excursions for other leisure purpose,Expenditure
+S92000003,2015,Count,million pounds (GBP),269,Day trips/excursions for other leisure purpose,Expenditure
+S92000003,2016,Count,million pounds (GBP),330,Day trips/excursions for other leisure purpose,Expenditure
+S92000003,2014,Count,million pounds (GBP),599,Day trips/excursions for other leisure purpose,Expenditure
+S92000003,2014,Count,million pounds (GBP),311,"Special public event e.g. festival, exhibition",Expenditure
+S92000003,2015,Count,million pounds (GBP),392,"Special public event e.g. festival, exhibition",Expenditure
+S92000003,2015,Count,Million Visits,8,"Special public event e.g. festival, exhibition",Visits
+S92000003,2013,Count,Million Visits,6,"Special public event e.g. festival, exhibition",Visits
+S92000003,2016,Count,million pounds (GBP),205,"Special public event e.g. festival, exhibition",Expenditure
+S92000003,2013,Count,million pounds (GBP),228,"Special public event e.g. festival, exhibition",Expenditure
+S92000003,2014,Count,Million Visits,8,"Special public event e.g. festival, exhibition",Visits
+S92000003,2016,Count,Million Visits,6,"Special public event e.g. festival, exhibition",Visits
+S92000003,2013,Count,million pounds (GBP),143,"Sport participation, e.g. exercise classes, gym",Expenditure
+S92000003,2015,Count,million pounds (GBP),215,"Sport participation, e.g. exercise classes, gym",Expenditure
+S92000003,2014,Count,million pounds (GBP),317,"Sport participation, e.g. exercise classes, gym",Expenditure
+S92000003,2016,Count,Million Visits,8,"Sport participation, e.g. exercise classes, gym",Visits
+S92000003,2013,Count,Million Visits,5,"Sport participation, e.g. exercise classes, gym",Visits
+S92000003,2016,Count,million pounds (GBP),289,"Sport participation, e.g. exercise classes, gym",Expenditure
+S92000003,2014,Count,Million Visits,5,"Sport participation, e.g. exercise classes, gym",Visits
+S92000003,2015,Count,Million Visits,7,"Sport participation, e.g. exercise classes, gym",Visits
