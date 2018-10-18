@@ -45,7 +45,7 @@ for filename in notes:
         exec(cfile, environment)
         cfile.close()
     except IOError:
-        print 'File', filename, ' does not exist'
+        print('File', filename, ' does not exist')
 
 #pprint.pprint(environment)
         

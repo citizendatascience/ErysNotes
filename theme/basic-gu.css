@@ -226,3 +226,29 @@ Complimentary colours are #0E8258 #73820E #820E39
   letter-spacing: 1px;
 }
 
+.notebook{
+    border: 1px solid #bbbbbb;
+    margin-top: 5px;
+    margin-left: 10%;
+    margin-right: 10%;
+    max-width: 1200px;
+    padding: 15px;
+}
+
+.code{
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    padding:3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.output{
+    border: 1px solid #aaf;
+    background-color: #f7ffff;
+    padding:3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
