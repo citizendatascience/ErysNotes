@@ -9,6 +9,8 @@ define("actionType_restore", 6);
 define("actionType_calldelegate", 7);
 define("actionType_repeatreplace", 8);
 define("actionType_repeatcalldelegate", 9);
+define("actionType_prevline", 10);
+define("actionType_deleteline", 11);
 
 class md2html
 {
@@ -40,7 +42,14 @@ class md2html
             $ruleDefs = explode("\n", $ruleDefs);
         foreach($ruleDefs as $rule)
         {
+            $prevline = false;
             $rule = trim($rule, "\t\n\r\0\x08\xEF\xBB\xBF"); // Trim UTF Byte order marks and whitespace.
+            if(preg_match('/^\s*prevline\s*("(?<find>(""|[^"])+)")\s*(?<rule>.+)/m', $rule, $match))
+            {
+                $prevline = true;
+                $matchregex = $this->sort_regex($match['find']);
+                $rule = $match['rule'];
+            }
             if(preg_match('/^\s*(?<type>\w+)\s*("(?<find>(""|[^"])+)")?\s*(("(?<replace>([^"]|\\\\")+)")|(?<label>\w+))?/', $rule, $match))
             {
                 //echo '<pre>'.print_r($match, true).'</pre>';
@@ -70,9 +79,17 @@ class md2html
                     case "restoreAll":
                         $this->rules[] = array('type'=>actionType_restore, 'label'=>null);
                         break;
+                    case 'deleteline':
+                        $this->rules[] = array('type'=>actionType_deleteline, 'rx'=>$this->sort_regex($match['find']));
+                        break;
                     default:
                         exit("Failed to process rule $rule");
                         break;
+                }
+                if($prevline)
+                {
+                    $idx = sizeof($this->rules)-1;
+                    $this->rules[$idx] = array('type'=>actionType_prevline, 'rx'=>$matchregex, 'rule'=>$this->rules[$idx]);
                 }
             }
             else
@@ -134,6 +151,49 @@ class md2html
                 case actionType_restore:
                     if (!$this->lineProcessingMode)
                         $this->restoreBlocks($rule['label']);
+                    break;
+                case actionType_deleteline:
+                    if ($this->lineProcessingMode)
+                    {
+                        $n=0;
+                        while($n<sizeof($this->linesBeingProcessed))
+                        {
+                            if(preg_match($rule['rx'], $this->linesBeingProcessed[$n]))
+                                array_splice($this->linesBeingProcessed, $n, 1);
+                            else
+                                $n++;
+                        }
+                    }
+                case actionType_prevline:
+                    if ($this->lineProcessingMode)
+                    {
+                        for($n=1; $n<sizeof($this->linesBeingProcessed); $n++)
+                        {
+                            if(preg_match($rule['rx'], $this->linesBeingProcessed[$n]))
+                            {
+                                switch($rule['rule']['type'])
+                                {
+                                    case actionType_replace:
+                                        $this->linesBeingProcessed[$n-1] = preg_replace($rule['rule']['rx'], $rule['rule']['replace'], $this->linesBeingProcessed[$n-1]);
+                                        break;
+                                    case actionType_repeatreplace:
+                                        $count = 1;
+                                        while($count)
+                                        {
+                                            $this->linesBeingProcessed[$n-1] = preg_replace($rule['rule']['rx'], $rule['rule']['replace'], $this->linesBeingProcessed[$n-1], -1, $count);
+                                        }
+                                        break;
+                                    case actionType_calldelegate:
+                                        if (isset($this->customProcessing[$rule['rule']['label']]))
+                                        {
+                                            $this->linesBeingProcessed[$n-1] = preg_replace_callback($rule['rule']['rx'], $this->customProcessing[$rule['rule']['label']],  $this->linesBeingProcessed[$n-1]);
+                                            break;
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
                     break;
             }
             //if ($this->lineProcessingMode)
