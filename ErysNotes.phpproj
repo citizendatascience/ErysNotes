@@ -8,7 +8,7 @@
     </RootNamespace>
     <OutputType>Library</OutputType>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
-    <SpecificPageValue>index.php</SpecificPageValue>
+    <SpecificPageValue>posttest.php</SpecificPageValue>
     <StartAction>SpecificPage</StartAction>
     <ProjectHome />
   </PropertyGroup>
@@ -23,6 +23,7 @@
     <Compile Include="lib\ipynb_reader.php" />
     <Compile Include="lib\md2html.php" />
     <Compile Include="minitest.php" />
+    <Compile Include="posttest.php" />
     <Compile Include="theme\basic-gu.css" />
     <Compile Include="theme\logo-gu-retina.png" />
     <Compile Include="theme\logo-gu-small.png" />
@@ -1497,6 +1498,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\defaultRules.txt" />
+    <Content Include="noteeval3.py" />
     <Content Include="scripts\ace\ace.js" />
     <Content Include="scripts\ace\ext-beautify.js" />
     <Content Include="scripts\ace\ext-elastic_tabstops_lite.js" />
