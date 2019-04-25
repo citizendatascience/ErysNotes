@@ -15,10 +15,6 @@ $template = new templateMerge('theme/template2.html');
 
 $projectID = md5($userinfo->params['oauth_consumer_key'].':'.$userinfo->params['resource_link_id']);
 $userID = md5($userinfo->params['user_id']);
-$template->addScript('scripts/ace/ace.js');
-$template->addScript('scripts/nb_outlineblocks.js');
-$template->addScript('scripts/ErysBlocks.js');
-
 //echo "$projectID $userID";
 if(strpos($userinfo->params['roles'], 'Instructor')!==false)
     GetInstructorView($projectID, $userID,  $template->pageData);
@@ -125,10 +121,8 @@ function GetLearnerView($projectID, $userID, &$pageData)
     if($nb != false)
     {
         $notebook = new iNotebook(file_get_contents($projFilesRoot.$nb));
-        $pageData['toolbar'] = "<div id='blockctrls'></div>";
-        $pageData['main'] =  "<div id='blockhost'></div>";
-        $pageData['scriptStart'] = 'content = '. $notebook->toErysJson() . ';'; 
-        $pageData['scriptStart'] .= file_get_contents('scripts/nb_blocks_config.js');
+        $pageData['main'] .= $notebook->render_preview();
+        //$pageData['main'] .= $notebook->updateToErys();
     }
 }
 

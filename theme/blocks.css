@@ -1,0 +1,91 @@
+﻿.blockEditor{
+    border: 1px solid blue;
+    background-color: white;
+}
+
+    .blockEditor .block {
+        border: 1px solid #d1d1f8;
+    }
+
+.blockEditor p{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 1px;
+    padding-bottom: 3px;
+}
+
+.blockCtrls{
+    border: 1px solid #808080;
+    background-color: #ccc;
+}
+
+.blockBtn{
+    display: inline-block;
+    border: 2px solid blue;
+    border-radius: 3px;
+    background-color: #fbf4ca;
+    color: blue;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: smaller;
+    padding:0;  
+    height:24px; 
+}
+
+.blockBtn:hover
+{
+    background-color: #ffd800;
+}
+
+.blockBtnDisabled{
+    border: 2px solid #808080;
+    border-radius: 3px;
+    background-color: #c0c0c0;
+    color: #808080;
+    cursor: default;
+    margin-left: 5px;
+    font-size: smaller;
+}
+
+.blockBtnDisabled:hover {
+    background-color: #c0c0c0;
+}
+
+.block{
+    margin: 3px;
+    margin-left: 15px;
+    padding-left:50px;
+}
+
+.collapsed_summary{
+    border: 2px solid #890000;
+    background-color: #d8d8d8
+}
+
+/* Three classes for experimenting with block types - names are really more to do with my application than relevent to the library */
+
+.objectives{
+    background-color: #ffd800;
+    padding: 3px;
+}
+
+.teacherNotes{
+    background-color: #c9fcbd;
+    border: 2px solid black;
+    padding: 3px;
+}
+
+.additionalMaterial{
+    background-color: #d1d1f8;
+    border: 1px solid blue;
+    margin-left: 5%;
+    margin-right: 5%;
+  /*  float: right; 
+      width: 40%; */
+}
+
+.blockEditor .blockSelected{
+    border: 1px solid #b1b1f8;
+    border-left-width: 8px;
+}
+

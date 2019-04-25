@@ -8,9 +8,11 @@
     </RootNamespace>
     <OutputType>Library</OutputType>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
-    <SpecificPageValue>posttest.php</SpecificPageValue>
+    <SpecificPageValue>launch.php</SpecificPageValue>
     <StartAction>SpecificPage</StartAction>
     <ProjectHome />
+    <Runtime>PHP</Runtime>
+    <RuntimeVersion>7.1</RuntimeVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -19,11 +21,22 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ajax\pythonconnect.php" />
+    <Compile Include="corelib\lti.php" />
+    <Compile Include="index_static_ver.php" />
     <Compile Include="index.php" />
+    <Compile Include="launch.php" />
+    <Compile Include="lib\callNoteEval.php" />
+    <Compile Include="lib\forms.php" />
+    <Compile Include="lib\iNotebook.php" />
     <Compile Include="lib\ipynb_reader.php" />
     <Compile Include="lib\md2html.php" />
+    <Compile Include="lib\tmpDevSecretManager.php" />
     <Compile Include="minitest.php" />
     <Compile Include="posttest.php" />
+    <Compile Include="protoindex.php" />
+    <Compile Include="pyDevTester.php" />
+    <Compile Include="pyDevTester_form.php" />
     <Compile Include="theme\basic-gu.css" />
     <Compile Include="theme\logo-gu-retina.png" />
     <Compile Include="theme\logo-gu-small.png" />
@@ -1399,6 +1412,7 @@
     <Compile Include="brythontest.php" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ajax\" />
     <Folder Include="scripts\" />
     <Folder Include="scripts\ace\" />
     <Folder Include="scripts\ace\snippets\" />
@@ -1879,6 +1893,11 @@
     <Content Include="scripts\ace\worker-php.js" />
     <Content Include="scripts\ace\worker-xml.js" />
     <Content Include="scripts\ace\worker-xquery.js" />
+    <Content Include="scripts\ajax.js" />
+    <Content Include="scripts\ErysBlocks.js" />
     <Content Include="scripts\index.js" />
+    <Content Include="scripts\nb_blocks_config.js" />
+    <Content Include="scripts\nb_outlineblocks.js" />
+    <Content Include="theme\blocks.css" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ import json
 import os
 
 def app(environ, start_response):
+    html = b''
     if environ['REQUEST_METHOD'] == 'POST':
         post_env = environ.copy()
         post_env['QUERY_STRING'] = ''
@@ -16,7 +17,6 @@ def app(environ, start_response):
             environ=post_env,
             keep_blank_values=True
         )
-        html = b''
         for fieldname, fielddata in enumerate(post):
             html += bytes(fielddata + '<br/>' + post[fielddata].value + '<p/>', 'utf-8')
 
@@ -39,7 +39,7 @@ def noteeval(code, resetpickle, picklefile, workingdir):
     oldwd = os.getcwd()
     os.chdir(workingdir)
 
-    # Load the environment to be used (this allows persistance, so note 2 gets note 1's vars etc.
+    # Load the environment to be used (this allows persistence, so note 2 gets note 1's vars etc.
     environment = {}
     if resetpickle or picklefile == '':
         environment = {}

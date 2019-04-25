@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import pickle
 import dill
 import pprint
@@ -6,8 +6,16 @@ from io import StringIO
 import cgi
 import json
 import os
+import configparser
+import urllib.request
 
 def app(environ, start_response):
+    # I'm hoping this next line isn't needed by apache. 
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    
+    html = b''
+    jsonData = {}
+    jsonString = b''
     if environ['REQUEST_METHOD'] == 'POST':
         post_env = environ.copy()
         post_env['QUERY_STRING'] = ''
@@ -16,30 +24,61 @@ def app(environ, start_response):
             environ=post_env,
             keep_blank_values=True
         )
-        html = b''
         for fieldname, fielddata in enumerate(post):
             html += bytes(fielddata + '<br/>' + post[fielddata].value + '<p/>', 'utf-8')
+            jsonData[fielddata] = post[fielddata].value
+            
+        if('message') in post.keys():
+            if(post['message'].value == 'initialise'):
+                initialise(post)
+            if(post['message'].value == 'runblock'):
+                resetpickle = 0
+                if 'resetpickle' in post.keys():
+                    resetpickle = int(post['resetpickle'].value)
+                source = ''
+                if 'source' in post.keys():
+                    source = post['source'].value
+                workingdir = post['activityID'].value + '/' + post['userID'].value
+                picklefile = post['userID'].value + '.pickle'
+                checkUserReady(resetpickle, picklefile, workingdir)
+                jsonData['output'] = noteeval(source, resetpickle, picklefile, workingdir)
 
-        if 'resetpickle' in post.keys():
-            resetpickle = int(post['resetpickle'].value)
-        else:
-            resetpickle = 0
-        if 'picklefile' in post.keys():
-            picklefile = post['picklefile'].value
-        else:
-            picklefile = ''
-        html = bytes(noteeval(post['code'].value, resetpickle, picklefile, post['workingdir'].value), 'utf-8')
+                        
+        jsonString = bytes(json.dumps(jsonData), 'utf-8')
 
     start_response('200 OK', [('Content-Type', 'application/json')])
-    
-    return [html]
+    return [jsonString]
 
+    #start_response('200 OK', [('Content-Type', 'text/html')])
+    #return [html]
+    
+def initialise(post):
+    #print('Initialising activity')
+    if(not os.path.exists(post['activityID'].value)):
+        os.mkdir(post['activityID'].value)
+    os.chdir(post['activityID'].value)
+    if('filename') in post.keys():
+        try:
+            if('urlupload') in post.keys():
+                urllib.request.urlretrieve(post['urlupload'].value, post['filename'].value)  
+            else:
+                print("Need to retrieve " + post['filename'].value)
+        except Exception as e:
+            output = "Error: " + str(e)
+            return output
+        
+            
+def checkUserReady(resetpickle, picklefile, workingdir):
+    if(not os.path.exists(workingdir)):
+        os.mkdir(workingdir)
+    #os.chdir(workingdir)
+    
 def noteeval(code, resetpickle, picklefile, workingdir):
     # save current dir and change to this notebook's dir
     oldwd = os.getcwd()
     os.chdir(workingdir)
 
-    # Load the environment to be used (this allows persistance, so note 2 gets note 1's vars etc.
+    # Load the environment to be used (this allows persistence, so note 2 gets note 1's vars etc.
     environment = {}
     if resetpickle or picklefile == '':
         environment = {}
@@ -82,6 +121,12 @@ def noteeval(code, resetpickle, picklefile, workingdir):
     # restore the directory and return the output (or error message.)
     os.chdir(oldwd)
     return output
+    
+#config = configparser.ConfigParser()
+#config.sections()
+#[]
+#config.read('eryspy.ini')
+
 
 # This makes this into a tiny web server - remove to use with WAPI
 if __name__ == '__main__':

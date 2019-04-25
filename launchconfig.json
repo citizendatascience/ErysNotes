@@ -1,0 +1,28 @@
+{
+    "users": [
+        {
+            "name": "Niall",
+            "role": "Instructor"
+        },
+        {
+            "name": "Student One",
+            "role": "Learner"
+        }
+    ],
+    "contexts": [
+        {
+            "name": "ErysTest",
+            "label": "ErysTest",
+            "id": "ET1",
+            "resources": [
+                {
+                    "title": "gdfgdfg",
+                    "description": "dfgdfg",
+                    "id": "3b3100fa4f056be12f9530fe6bd7715cf5e34754"
+                }
+            ]
+        }
+    ],
+    "key": "12345",
+    "secret": "secret"
+}
