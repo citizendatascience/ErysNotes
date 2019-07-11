@@ -3,13 +3,15 @@
 #form configureActivity;
 upload notebook "Upload/Change ipynb notebook";
 upload data "Add a data file";
+string[30] folder "Subfolder for data file (/ to separate)";
+upload image "Add an image file";
 okcancel "OK" "Cancel";
-*/
+ */
 
 define('configureActivity_magic', md5('configureActivity'));
 
 // Function hand modified to display current files.
-function show_configureActivity($nb, $files)
+function show_configureActivity($nb, $files, $folder, $required_images, $images)
 {
     $out = '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" enctype="multipart/form-data">';
     $out .= '<input type="hidden" name="configureActivity_code" value="'.configureActivity_magic.'"/>';
@@ -36,7 +38,32 @@ function show_configureActivity($nb, $files)
     $out .= '<div class="formfield">';
     $out .= '<label for="data">Add a data file:';
     $out .= '</label>';
-    $out .= '<br/><span class="forminput"><input type="file" name="data" size="50"';
+    $out .= '<br/><span class="forminput"><input type="file" name="data" size="50" ';
+    $out .= "/></span></div>\n";
+
+    $out .= '<div class="formfield">';
+    $out .= '<label for="folder">Subfolder for data file (/ to separate):';
+    $out .= '</label>';
+    $out .= '<br/><span class="forminput"><input type="text" name="folder" value="'.$folder.'" size="30"';
+    $out .= "/></span></div>\n";
+
+    if(sizeof($required_images))
+    {
+        $out .= "<div>Expected images:<ul>";
+        foreach($required_images as $f)
+        {
+            if(in_array($f, $images))
+                $out .= "<li>$f <a href='?imgdel=$f'>Delete</a></li>";
+            else
+                $out .= "<li><i>$f <span style='color:red;'>Missing</span></i></li>";
+        }
+        $out .= "</ul></div>";
+    }
+
+    $out .= '<div class="formfield">';
+    $out .= '<label for="image">Add an image file:';
+    $out .= '</label>';
+    $out .= '<br/><span class="forminput"><input type="file" name="image" size="50" ';
     $out .= "/></span></div>\n";
 
     $out .= '<div class="formfield">';
@@ -56,7 +83,7 @@ function configureActivity_submitted()
         return false;
 }
 
-function update_from_configureActivity(&$notebook, &$data)
+function update_from_configureActivity(&$notebook, &$data, &$folder, &$image)
 {
     if((isset($_REQUEST['configureActivity_code']))&&($_REQUEST['configureActivity_code']==configureActivity_magic))
     {
@@ -70,6 +97,11 @@ function update_from_configureActivity(&$notebook, &$data)
             $data = $_FILES['data'];
         else
             $data = false;
+        $folder = strval($_REQUEST['folder']);
+        if((isset($_FILES['image']))&&($_FILES['image']['name']!=""))
+            $image = $_FILES['image'];
+        else
+            $image = false;
         return true;
     }
     else
@@ -81,4 +113,3 @@ function update_from_configureActivity(&$notebook, &$data)
 //USERCODE-SECTION-extra-functions
 // Put code here.
 //ENDUSERCODE-SECTION-extra-functions
-?>

@@ -13,6 +13,11 @@
     <ProjectHome />
     <Runtime>PHP</Runtime>
     <RuntimeVersion>7.1</RuntimeVersion>
+    <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
+    <EnvName>PHPDev</EnvName>
+    <PHPDevHostName>localhost</PHPDevHostName>
+    <PHPDevAutoPort>false</PHPDevAutoPort>
+    <PHPDevPort>8000</PHPDevPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -21,22 +26,17 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ajax\pythonconnect.php" />
+    <Compile Include="ajax\callpython_service.php" />
+    <Compile Include="ajax\md2html_service.php" />
     <Compile Include="corelib\lti.php" />
-    <Compile Include="index_static_ver.php" />
     <Compile Include="index.php" />
     <Compile Include="launch.php" />
-    <Compile Include="lib\callNoteEval.php" />
+    <Compile Include="lib\callpython.php" />
     <Compile Include="lib\forms.php" />
     <Compile Include="lib\iNotebook.php" />
-    <Compile Include="lib\ipynb_reader.php" />
     <Compile Include="lib\md2html.php" />
     <Compile Include="lib\tmpDevSecretManager.php" />
-    <Compile Include="minitest.php" />
-    <Compile Include="posttest.php" />
-    <Compile Include="protoindex.php" />
-    <Compile Include="pyDevTester.php" />
-    <Compile Include="pyDevTester_form.php" />
+    <Compile Include="service\getFile.php" />
     <Compile Include="theme\basic-gu.css" />
     <Compile Include="theme\logo-gu-retina.png" />
     <Compile Include="theme\logo-gu-small.png" />
@@ -46,9 +46,7 @@
     <Compile Include="corelib\dataaccess_lite.php" />
     <Compile Include="corelib\force_ssl.php" />
     <Compile Include="corelib\form_lib2.php" />
-    <Compile Include="corelib\link2html.php" />
     <Compile Include="corelib\templateMerge.php" />
-    <Compile Include="corelib\wiki2html.php" />
     <Compile Include="src\Lib\asyncio\coroutines.py" />
     <Compile Include="src\Lib\asyncio\events.py" />
     <Compile Include="src\Lib\asyncio\filereader.py" />
@@ -1295,124 +1293,11 @@
     <Compile Include="src\unicode.min.js" />
     <Compile Include="src\unicode.txt" />
     <Compile Include="src\version_info.js" />
-    <Compile Include="tests\ace\snippets\python.js" />
-    <Compile Include="tests\ace\ace.js" />
-    <Compile Include="tests\ace\ext-language_tools.js" />
-    <Compile Include="tests\ace\mode-python3.js" />
-    <Compile Include="tests\brython_test_utils\unittest.py" />
-    <Compile Include="tests\brython_test_utils\__init__.py" />
-    <Compile Include="tests\debugger\acorn.js" />
-    <Compile Include="tests\debugger\acorn_interpreter.js" />
-    <Compile Include="tests\debugger\interpreter.js" />
-    <Compile Include="tests\debugger\main.js" />
-    <Compile Include="tests\debugger\python_expressions.py" />
-    <Compile Include="tests\debugger\__init__.py" />
-    <Compile Include="tests\from_import_test\a.py" />
-    <Compile Include="tests\from_import_test\b.py" />
-    <Compile Include="tests\from_import_test\c.py" />
-    <Compile Include="tests\from_import_test\relimport.py" />
-    <Compile Include="tests\from_import_test\relimport2.py" />
-    <Compile Include="tests\from_import_test\__init__.py" />
-    <Compile Include="tests\modtest\bye\__init__.py" />
-    <Compile Include="tests\modtest\hello.py" />
-    <Compile Include="tests\modtest\__init__.py" />
-    <Compile Include="tests\pycache\hello_pyc2\world.pyc.js" />
-    <Compile Include="tests\pycache\hello_pyc2\__init__.pyc.js" />
-    <Compile Include="tests\pycache\foo_pyc2.pyc.js" />
-    <Compile Include="tests\pycache\test_issue7_pyc2.pyc.js" />
-    <Compile Include="tests\qunit\run_tests.html" />
-    <Compile Include="tests\unittests\test\pystone.py" />
-    <Compile Include="tests\unittests\test\test_int.py" />
-    <Compile Include="tests\unittests\HTMLTestRunner.py" />
-    <Compile Include="tests\unittests\index.html" />
-    <Compile Include="tests\unittests\show.html" />
-    <Compile Include="tests\a.py" />
-    <Compile Include="tests\build_patterns.py" />
-    <Compile Include="tests\console.css" />
-    <Compile Include="tests\console.html" />
-    <Compile Include="tests\console.py" />
-    <Compile Include="tests\debugger.html" />
-    <Compile Include="tests\delegator.py" />
-    <Compile Include="tests\dev_env.html" />
-    <Compile Include="tests\dev_env.py" />
-    <Compile Include="tests\dom.py" />
-    <Compile Include="tests\dom_js_tests.js" />
-    <Compile Include="tests\dom_objects.py" />
-    <Compile Include="tests\editor.html" />
-    <Compile Include="tests\editor.py" />
-    <Compile Include="tests\global_in_imported.py" />
-    <Compile Include="tests\import_test.html" />
-    <Compile Include="tests\index.html" />
-    <Compile Include="tests\index_dist.html" />
-    <Compile Include="tests\index_VFS.html" />
-    <Compile Include="tests\inject_name_in_module.py" />
-    <Compile Include="tests\issues.py" />
-    <Compile Include="tests\issues_bb.py" />
-    <Compile Include="tests\issues_gc.py" />
-    <Compile Include="tests\jsobj_tests.js" />
-    <Compile Include="tests\js_console.html" />
-    <Compile Include="tests\loader_test.html" />
-    <Compile Include="tests\packed_arguments.py" />
-    <Compile Include="tests\precompile.html" />
-    <Compile Include="tests\recursive_import.py" />
-    <Compile Include="tests\simple.py" />
-    <Compile Include="tests\test.empty.vfs.js" />
-    <Compile Include="tests\test.vfs.js" />
-    <Compile Include="tests\tester.py" />
-    <Compile Include="tests\test_aio.py" />
-    <Compile Include="tests\test_bisect.py" />
-    <Compile Include="tests\test_bytes.py" />
-    <Compile Include="tests\test_classes.py" />
-    <Compile Include="tests\test_collections.py" />
-    <Compile Include="tests\test_datetime.py" />
-    <Compile Include="tests\test_decimals.py" />
-    <Compile Include="tests\test_decorators.py" />
-    <Compile Include="tests\test_descriptors.py" />
-    <Compile Include="tests\test_dict.py" />
-    <Compile Include="tests\test_dom.html" />
-    <Compile Include="tests\test_exec.py" />
-    <Compile Include="tests\test_from_import.py" />
-    <Compile Include="tests\test_fstrings.py" />
-    <Compile Include="tests\test_functools.py" />
-    <Compile Include="tests\test_generators.py" />
-    <Compile Include="tests\test_hashlib.py" />
-    <Compile Include="tests\test_import.py" />
-    <Compile Include="tests\test_indexedDB.py" />
-    <Compile Include="tests\test_iterators.py" />
-    <Compile Include="tests\test_itertools.py" />
-    <Compile Include="tests\test_json.py" />
-    <Compile Include="tests\test_list.py" />
-    <Compile Include="tests\test_list_methods.py" />
-    <Compile Include="tests\test_markdown.html" />
-    <Compile Include="tests\test_markdown.py" />
-    <Compile Include="tests\test_math.py" />
-    <Compile Include="tests\test_memoryview.py" />
-    <Compile Include="tests\test_null.py" />
-    <Compile Include="tests\test_numbers.py" />
-    <Compile Include="tests\test_print.py" />
-    <Compile Include="tests\test_pyc.vfs.js" />
-    <Compile Include="tests\test_random.py" />
-    <Compile Include="tests\test_re.py" />
-    <Compile Include="tests\test_rmethods.py" />
-    <Compile Include="tests\test_set.py" />
-    <Compile Include="tests\test_sp.py" />
-    <Compile Include="tests\test_storage.py" />
-    <Compile Include="tests\test_strings.py" />
-    <Compile Include="tests\test_string_format.py" />
-    <Compile Include="tests\test_string_methods.py" />
-    <Compile Include="tests\test_struct.py" />
-    <Compile Include="tests\test_suite.py" />
-    <Compile Include="tests\test_time.py" />
-    <Compile Include="tests\test_timeit.py" />
-    <Compile Include="tests\test_types.py" />
-    <Compile Include="tests\test_unittest.py" />
-    <Compile Include="tests\test_urllib.py" />
-    <Compile Include="tests\web_worker_tests.html" />
     <Compile Include="config.php" />
-    <Compile Include="brythontest.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ajax\" />
+    <Folder Include="service\" />
     <Folder Include="scripts\" />
     <Folder Include="scripts\ace\" />
     <Folder Include="scripts\ace\snippets\" />
@@ -1496,23 +1381,9 @@
     <Folder Include="src\libs" />
     <Folder Include="src\web_workers" />
     <Folder Include="src" />
-    <Folder Include="tests\ace\snippets" />
-    <Folder Include="tests\ace" />
-    <Folder Include="tests\brython_test_utils" />
-    <Folder Include="tests\debugger" />
-    <Folder Include="tests\from_import_test" />
-    <Folder Include="tests\modtest\bye" />
-    <Folder Include="tests\modtest" />
-    <Folder Include="tests\pycache\hello_pyc2" />
-    <Folder Include="tests\pycache" />
-    <Folder Include="tests\qunit" />
-    <Folder Include="tests\unittests\test" />
-    <Folder Include="tests\unittests" />
-    <Folder Include="tests" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\defaultRules.txt" />
-    <Content Include="noteeval3.py" />
     <Content Include="scripts\ace\ace.js" />
     <Content Include="scripts\ace\ext-beautify.js" />
     <Content Include="scripts\ace\ext-elastic_tabstops_lite.js" />
@@ -1895,7 +1766,6 @@
     <Content Include="scripts\ace\worker-xquery.js" />
     <Content Include="scripts\ajax.js" />
     <Content Include="scripts\ErysBlocks.js" />
-    <Content Include="scripts\index.js" />
     <Content Include="scripts\nb_blocks_config.js" />
     <Content Include="scripts\nb_outlineblocks.js" />
     <Content Include="theme\blocks.css" />

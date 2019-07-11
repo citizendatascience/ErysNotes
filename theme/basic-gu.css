@@ -22,7 +22,7 @@ Complimentary colours are #0E8258 #73820E #820E39
     position: fixed;
     top: 8px;
     height: 72px;
-    width: 300px;
+    width: 195px;
     overflow: auto;
     background: url(logo-gu-retina.png) no-repeat 15% center;
     background-size: auto 70%;
@@ -56,8 +56,9 @@ Complimentary colours are #0E8258 #73820E #820E39
     left: 0;
     height: 100%;
     display: table-cell;
-	width: 25%;
+	width: 200px;
     min-width: 200px;
+    max-width: 250px;
 }
 
 #leftOuterContainer {
@@ -159,6 +160,18 @@ Complimentary colours are #0E8258 #73820E #820E39
     position: relative;
     height: 100%;
     width: 100%;
+}
+
+#mainContent {
+    position: absolute;
+    top: 1px;
+    bottom: 5px;
+    left: 1px;
+    right: 1px;
+    background: #ffffff;
+    margin: 0px;
+    padding: 2px;
+    overflow:scroll;
 }
 
 #rightOuter {

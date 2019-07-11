@@ -16,6 +16,7 @@ class md2html
 {
     var $rules;
     var $customProcessing;
+    var $variables;
 
     function __construct($rulesFile=false)
     {
@@ -38,6 +39,7 @@ class md2html
     function attemptParse($ruleDefs)
     {
         $this->rules = array();
+        $this->variables = array();
         if(!is_array($ruleDefs))
             $ruleDefs = explode("\n", $ruleDefs);
         foreach($ruleDefs as $rule)
@@ -50,7 +52,11 @@ class md2html
                 $matchregex = $this->sort_regex($match['find']);
                 $rule = $match['rule'];
             }
-            if(preg_match('/^\s*(?<type>\w+)\s*("(?<find>(""|[^"])+)")?\s*(("(?<replace>([^"]|\\\\")+)")|(?<label>\w+))?/', $rule, $match))
+            if(preg_match('/\A\s*var\s+(?<var>\w+)\s*=\s*"(?<default>(\\\\\\\\|\\\\"|[^\\\\"])*)"\s*$/m', $rule, $match))
+            {
+                $this->variables[$match['var']] = $match['default'];
+            }
+            elseif(preg_match('/^\s*(?<type>\w+)\s*("(?<find>(""|[^"])+)")?\s*(("(?<replace>([^"]|\\\\")+)")|(?<label>\w+))?/', $rule, $match))
             {
                 //echo '<pre>'.print_r($match, true).'</pre>';
                 switch($match['type'])
@@ -59,13 +65,19 @@ class md2html
                         if(isset($match['label']))
                             $this->rules[] = array('type'=>actionType_calldelegate, 'rx'=>$this->sort_regex($match['find']), 'label'=>$match['label']);
                         else
-                            $this->rules[] = array('type'=>actionType_replace, 'rx'=>$this->sort_regex($match['find']), 'replace'=>$match['replace']);
+                        {
+                            $vars = $this->getVars($match['replace']);
+                            $this->rules[] = array('type'=>actionType_replace, 'rx'=>$this->sort_regex($match['find']), 'replace'=>$match['replace'], 'vars'=>$vars);
+                        }
                         break;
                     case 'repeatreplace':
                         if(isset($match['label']))
                             $this->rules[] = array('type'=>actionType_repeatcalldelegate, 'rx'=>$this->sort_regex($match['find']), 'label'=>$match['label']);
                         else
-                            $this->rules[] = array('type'=>actionType_repeatreplace, 'rx'=>$this->sort_regex($match['find']), 'replace'=>$match['replace']);
+                        {
+                            $vars = $this->getVars($match['replace']);
+                            $this->rules[] = array('type'=>actionType_repeatreplace, 'rx'=>$this->sort_regex($match['find']), 'replace'=>$match['replace'], 'vars'=>$vars);
+                        }
                         break;
                     case 'remove':
                         $this->rules[] = array('type'=>actionType_remove, 'rx'=>$this->sort_regex($match['find']), 'label'=>$match['label']);
@@ -101,6 +113,21 @@ class md2html
         return true;
     }
 
+    function getVars($inReplace)
+    {
+        if(preg_match_all('/%(\w+)%/m', $inReplace, $matches))
+        {
+            $vars = array();
+            foreach($matches[1] as $match)
+            {
+                if((isset($this->variables[$match]))&&(!in_array($match, $vars)))
+                    $vars[] = $match;
+            }
+            return $vars;
+        }
+        return false;
+    }
+
     function Convert($wikiText)
     {
         $wikiText = trim($wikiText, "\x08\xEF\xBB\xBF"); // Trim UTF Byte order marks and whitespace.
@@ -116,19 +143,31 @@ class md2html
                     $this->findAndSaveBlocks($rule['rx'], $rule['label']);
                     break;
                 case actionType_replace:
+                    $replace = $rule['replace'];
+                    if($rule['vars'])
+                    {
+                        foreach($rule['vars'] as $v)
+                            $replace = str_replace("%$v%", $this->variables[$v], $replace);
+                    }
                     if ($this->lineProcessingMode)
-                        $this->linesBeingProcessed = preg_replace($rule['rx'], $rule['replace'], $this->linesBeingProcessed);
+                        $this->linesBeingProcessed = preg_replace($rule['rx'], $replace, $this->linesBeingProcessed);
                     else
-                        $this->textBeingProcessed = preg_replace($rule['rx'], $rule['replace'], $this->textBeingProcessed);
+                        $this->textBeingProcessed = preg_replace($rule['rx'], $replace, $this->textBeingProcessed);
                     break;
                 case actionType_repeatreplace:
+                    $replace = $rule['replace'];
+                    if($rule['vars'])
+                    {
+                        foreach($rule['vars'] as $v)
+                            $replace = str_replace("%$v%", $this->variables[$v], $replace);
+                    }
                     $count = 1;
                     while($count)
                     {
                         if ($this->lineProcessingMode)
-                            $this->linesBeingProcessed = preg_replace($rule['rx'], $rule['replace'], $this->linesBeingProcessed, -1, $count);
+                            $this->linesBeingProcessed = preg_replace($rule['rx'], $replace, $this->linesBeingProcessed, -1, $count);
                         else
-                            $this->textBeingProcessed = preg_replace($rule['rx'], $rule['replace'], $this->textBeingProcessed, -1, $count);
+                            $this->textBeingProcessed = preg_replace($rule['rx'], $replace, $this->textBeingProcessed, -1, $count);
                     }
                     break;
                 case actionType_calldelegate:

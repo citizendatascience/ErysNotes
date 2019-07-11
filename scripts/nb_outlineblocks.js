@@ -80,7 +80,7 @@ function nb_outlineBlocksBase()
             if ((thisBlk != undefined) && (!thisBlk.controls.addsiblingBtn.disabled) && (thisBlk.parentID != undefined))
             {
                 //USERCODE-SECTION-buttonclicked-addsibling]
-                nb_outlineBlocksBase.blockLookup[thisBlk.parentID].addBlock(nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID]);
+                nb_outlineBlocksBase.blockLookup[thisBlk.parentID].addBlock(thisBlk);
                 //ENDUSERCODE-SECTION-buttonclicked-addsibling
             }
         }
@@ -126,8 +126,6 @@ function nb_outlineBlocksBase()
         nb_outlineBlocksBase.doneClicked = function (e)
         {
             thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
-            if (thisBlk == undefined)
-                thisBlk = nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID];
             if ((thisBlk != undefined) && (!thisBlk.controls.doneBtn.disabled))
             {
                 //USERCODE-SECTION-buttonclicked-done
@@ -149,10 +147,10 @@ function nb_outlineBlocksBase()
             if ((thisBlk != undefined) && (!thisBlk.controls.cancelBtn.disabled))
             {
                 //USERCODE-SECTION-buttonclicked-cancel
-                nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID].editEnd(false);
-                nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID].controls.enableDone(false);
-                nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID].controls.enableCancel(false);
-                nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID].controls.enableEdit(true);
+                thisBlk.editEnd(false);
+                thisBlk.controls.enableDone(false);
+                thisBlk.controls.enableCancel(false);
+                thisBlk.controls.enableEdit(true);
                 //ENDUSERCODE-SECTION-buttonclicked-cancel
             }
         }
@@ -244,7 +242,6 @@ function nb_outlineBlocksBase()
 
         nb_outlineBlocksBase.collapseClicked = function (e)
         {
-            //thisBlk = nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID];
             thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
             if ((thisBlk != undefined) && (!thisBlk.controls.collapseBtn.disabled))
             {
@@ -272,7 +269,6 @@ function nb_outlineBlocksBase()
 
         nb_outlineBlocksBase.expandClicked = function (e)
         {
-            //thisBlk = nb_outlineBlocksBase.blockLookup[e.currentTarget.parentID];
             thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
             if ((thisBlk != undefined) && (!thisBlk.controls.expandBtn.disabled))
             {
@@ -350,14 +346,16 @@ function nb_outlineBlocksBase()
             if (nb_outlineBlocksBase.selectedBlock != null)
             {
                 nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock].node.classList.remove('blockSelected');
-                nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock].ctrlsNode.hidden = true;
+                if (nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock].ctrlsNode != null)
+                    nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock].ctrlsNode.hidden = true;
                 nb_outlineBlocksBase.selectedBlock = null;
             }
             if ((nb_outlineBlocksBase.blockLookup[id] != undefined) && (nb_outlineBlocksBase.blockLookup[id].owner.editing))
             {
                 thisBlk = nb_outlineBlocksBase.blockLookup[id];
                 thisBlk.node.classList.add('blockSelected');
-                thisBlk.ctrlsNode.hidden = false;
+                if (this.ctrlsNode != null)
+                    thisBlk.ctrlsNode.hidden = false;
                 if (thisBlk.enableMoveButtons != undefined)
                     thisBlk.enableMoveButtons();
                 nb_outlineBlocksBase.selectedBlock = id;
@@ -384,16 +382,29 @@ function nb_outlineBlocksBase()
     nb_outlineBlocksBase.count++;
     nb_outlineBlocksBase.blockLookup[this.id] = this;
 
-    this.addBlock = function (after, select)
+    this.addBlock = function (after, select, initialize)
     {
         var block = new nb_outlineBlock(this.owner);
-        block.contentType = this.contentType;
+        if (this.childType == undefined)
+            block.contentType = this.owner.defaultChild;
+        else
+            block.contentType = this.childType;
         if ((typeof after == 'undefined') || (after == false))
-            this.node.insertBefore(block.node, this.ctrlsNode);
+            if (this.ctrlsNode)
+                this.node.insertBefore(block.node, this.ctrlsNode);
+            else
+                this.node.insertBefore(block.node, null);
         else
             this.node.insertBefore(block.node, after.node.nextSibling);
         block.parentID = this.id;
         block.owner = this.owner;
+        block.content = '&nbsp;';
+        block.source = '';
+        if ((initialize == undefined) || (initialize == true))
+        {
+            if ((block.owner.editors[this.contentType] != undefined) && (block.owner.editors[block.contentType].initialise != undefined))
+                block.owner.editors[this.contentType].initialise(block);
+        }
         this.reindex(false);
         if ((typeof select == 'undefined') || (select == true))
             nb_outlineBlocksBase.selectBlock(block.id);
@@ -402,18 +413,25 @@ function nb_outlineBlocksBase()
 
     this.addControls = function (isRoot, config)
     {
-        this.ctrlsNode = document.createElement('div');
-        this.ctrlsNode.classList.add('blockCtrls');
-        this.node.appendChild(this.ctrlsNode);
-
-        var ctrlParent = this.ctrlsDisplayNode == null ? this : this.ctrlsDisplayNode;
+        //# Ideally don't create if not needed, & therefor check not undefined elsewhere
+        var ctrlParent = this.owner.ctrlsDisplayNode == null ? this : this.owner.ctrlsDisplayNode;
         if (ctrlParent != this)
         {
-            ctrlParent.ctrlsNode = document.createElement('div');
-            ctrlParent.ctrlsNode.classList.add('blockCtrls');
-            ctrlParent.appendChild(ctrlParent.ctrlsNode);
+            if (ctrlParent.ctrlsNode == undefined)
+            {
+                ctrlParent.ctrlsNode = document.createElement('div');
+                ctrlParent.ctrlsNode.classList.add('blockCtrls');
+                ctrlParent.appendChild(ctrlParent.ctrlsNode);
+            }
+            this.ctrlsNode = null;
         }
-        //var ctrlParent = this;
+        else
+        {
+            this.ctrlsNode = document.createElement('div');
+            this.ctrlsNode.classList.add('blockCtrls');
+            this.node.appendChild(this.ctrlsNode);
+            this.ctrlsNode.hidden = true;
+        }
         if (this.owner.ctrlsDisplayNode == null)
         {
             this.controls = new nb_outlineControls(ctrlParent.ctrlsNode, isRoot, config);
@@ -481,8 +499,8 @@ function nb_outlineBlocksBase()
             if (data.content != undefined)
                 this.content = data.content;
             else
-                this.content = '';
-            this.contentnode.innerHTML = this.content;
+                this.content = data.source;
+            this.contentnode.innerHTML = data.content;
             if (data.source != undefined)
                 this.source = data.source;
             else
@@ -491,15 +509,16 @@ function nb_outlineBlocksBase()
             if ((this.owner.editors[this.contentType] != undefined) && (this.owner.editors[this.contentType].initialise != undefined))
                 this.owner.editors[this.contentType].initialise(this);
             else
-                if (this.owner.editors[this.contentType] == undefined)
-                    alert("Unregistered content type " + this.contentType);
+                if (this.owner.editors[this.contentType] != undefined)
+                    alert("Unregistered content type (lacks initialise method) " + this.contentType);
                 else
                     alert("Undefined content type");
+
         }
         else
         {
             this.content = '';
-
+            this.contentType = 'unknown_fix_this';
         }
         if ((this != this.owner) && (nb_outlineBlocksBase.selectedBlock == undefined))
         {
@@ -507,11 +526,10 @@ function nb_outlineBlocksBase()
         }
         for (i in data.children)
         {
-            block = this.addBlock(false, false);
+            block = this.addBlock(false, false, false);
             block.unserialize(data.children[i]);
         }
     }
-
 
     this.reindex = function (recurse)
     {
@@ -549,7 +567,6 @@ function nb_outlineBlocksBase()
         this.reindex();
     }
 }
-
 ///nb_JSSection nb_outlineControls
 function nb_outlineControls(ctrlsNode, isRoot, config)
 {
@@ -1061,13 +1078,15 @@ function nb_OutlineRoot(rootid, readonly, ctrlsid, config)
             {
                 this.editing = true;
                 this.node.classList.add('blockEditor');
-                this.ctrlsNode.hidden = false;
+                if (this.ctrlsNode != null)
+                    this.ctrlsNode.hidden = false;
             }
             else
             {
                 this.editing = false;
                 this.node.classList.remove('blockEditor');
-                this.ctrlsNode.hidden = true;
+                if (this.ctrlsNode != null)
+                    this.ctrlsNode.hidden = true;
             }
         }
 
@@ -1075,6 +1094,14 @@ function nb_OutlineRoot(rootid, readonly, ctrlsid, config)
     }
     this.editors = [];
     this.defaultEditor = new nb_outlineBlocktypeBase();
+    this.defaultChild = '';
+
+    this.addEditor = function(name, editor)
+    {
+        if (Object.keys(this.editors).length == 0)
+            this.defaultChild = name;
+        this.editors[name] = editor;
+    }
 
     this.Save = function()
     {
@@ -1089,9 +1116,22 @@ function nb_OutlineRoot(rootid, readonly, ctrlsid, config)
 nb_outlineBlocktypeBase = function()
 {
     this.name = "nb_outlineBlocktypeBase";
-    this.initEdit = function(id, editnode, source)
+    this.initEdit = function(block)
     {
-        editnode.innerHTML = "<textarea id='" + id + "_editarea' rows='12' style='margin:2px; width:95%'>" + source + "</textarea>";
+        block.contentnode.hidden = true;
+        if (block.editnode == undefined)
+        {
+            block.editnode = document.createElement('div');
+            block.editnode.id = block.id + '_edit';
+            block.node.insertBefore(block.editnode, block.contentnode);
+        }
+        else
+        {
+            block.editnode.hidden = false;
+            //block.blockSettings.innerHTML = block.getBlockSettings();
+            block.controls.setSettingsSel(block.getBlockSettings());
+        }
+        block.editnode.innerHTML = "<textarea id='" + block.id + "_editarea' rows='12' style='margin:2px; width:95%'>" + block.source + "</textarea>";
     }
 
     this.render = function(block)
@@ -1124,7 +1164,7 @@ function nb_outlineBlock(owner)
 
     this.editStart = function ()
     {
-        if ((this.owner.config.multiedit == undefined)||(this.owner.config.multiedit == false))
+        if ((this.owner.config.multiedit == undefined) || (this.owner.config.multiedit == false))
         {
             if (nb_outlineBlocksBase.editingBlock != null)
             {
@@ -1133,33 +1173,17 @@ function nb_outlineBlock(owner)
             }
         }
         nb_outlineBlocksBase.editingBlock = this.id;
-        this.contentnode.hidden = true;
-        if (this.editnode == undefined)
-        {            
-            this.editnode = document.createElement('div');
-            this.editnode.id = this.id + '_edit';
-            this.node.insertBefore(this.editnode, this.contentnode);
-        }
+        if (this.owner.editors[this.contentType] != undefined)
+            this.owner.editors[this.contentType].initEdit(this);
+        else if (this.contentType == '')
+            this.owner.defaultEditor.initEdit(this);
         else
-        {
-            this.editnode.hidden = false;
-            //this.blockSettings.innerHTML = this.getBlockSettings();
-            this.controls.setSettingsSel(this.getBlockSettings());
-        }
-            if (this.owner.editors[this.contentType] != undefined)
-                this.owner.editors[this.contentType].initEdit(this.id, this.editnode, this.source);
-            else if (this.contentType == '')
-                this.owner.defaultEditor.initEdit(this.id, this.editnode, this.source);
-            else
-            {
-                this.contentnode.hidden = false;
-                alert("I don't know how to edit " + this.contentType + " content.")
-            }
-            this.blockSettings = document.createElement('span');
-            this.blockSettings.id = this.id + '_blockSettings';
-            this.ctrlsNode.appendChild(this.blockSettings);
-            //this.blockSettings.innerHTML = this.getBlockSettings();
-            this.controls.setSettingsSel(this.getBlockSettings());
+            alert("I don't know how to edit " + this.contentType + " content.")
+        this.blockSettings = document.createElement('span');
+        this.blockSettings.id = this.id + '_blockSettings';
+        //this.ctrlsNode.appendChild(this.blockSettings);
+        //this.blockSettings.innerHTML = this.getBlockSettings();
+        this.controls.setSettingsSel(this.getBlockSettings());
         this.controls.enableDone(true);
         this.controls.enableCancel(true);
         this.controls.enableEdit(false);
@@ -1234,6 +1258,8 @@ function nb_outlineBlock(owner)
     this.setContentType = function (newType)
     {
         //#There should be a cleanup to get rid of unwanted artifacts of the old type
+        if ((this.owner.editors[this.contentType] != undefined)&&(this.owner.editors[this.contentType].cleanup != undefined))
+                this.owner.editors[this.contentType].cleanup(this);
         this.contentType = newType;
         this.owner.editors[newType].initialise(this);
     }

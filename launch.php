@@ -174,7 +174,7 @@ function showUserSelect($show=true)
                 if($userid == -1)
                     $form = 'add';
                 else
-                    setcookie('launchtool_user', $userid);
+                    setcookie('launchtool_user', $userid, time()+3600);
                 break;
             case 'adduser':
                 $config->users[] = (object) array('name'=>$_REQUEST['name'], 'role'=>$_REQUEST['role']);

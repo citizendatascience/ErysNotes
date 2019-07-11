@@ -36,8 +36,7 @@ function ajaxLinkClick(url)
                     processAjaxResponse(response);
                 } catch (e)
                 {
-                    //alert("JSON parse error in wizardsIDE.js ajaxLinkClick\nURL: " + url + "\n" + e + "\n\n" + xmlHttp.responseText);
-                    document.body.innerHTML = xmlHttp.responseText;
+                    document.write(xmlHttp.responseText);
                 }
             }
             else
@@ -68,7 +67,7 @@ function submitForm(formid, button)
                     processAjaxResponse(response);
                 } catch (e)
                 {
-                    alert("JSON parse error in ajaxLinkClick\n" + e + "\n\n" + xmlHttp.responseText);
+                    alert("JSON parse error in submitForm\n" + e + "\n\n" + xmlHttp.responseText);
                     document.write(xmlHttp.responseText);
                 }
             }

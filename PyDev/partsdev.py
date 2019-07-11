@@ -7,7 +7,9 @@ import cgi
 import json
 import os
 import configparser
-import urllib.request
+#import urllib.request
+import requests
+import base64
 
 def app(environ, start_response):
     # I'm hoping this next line isn't needed by apache. 
@@ -33,15 +35,33 @@ def app(environ, start_response):
                 initialise(post)
             if(post['message'].value == 'runblock'):
                 resetpickle = 0
+                
                 if 'resetpickle' in post.keys():
                     resetpickle = int(post['resetpickle'].value)
                 source = ''
+                
                 if 'source' in post.keys():
                     source = post['source'].value
                 workingdir = post['activityID'].value + '/' + post['userID'].value
                 picklefile = post['userID'].value + '.pickle'
                 checkUserReady(resetpickle, picklefile, workingdir)
-                jsonData['output'] = noteeval(source, resetpickle, picklefile, workingdir)
+                output, errors, runcount = noteeval(source, resetpickle, picklefile, workingdir)
+                jsonData['output'] = output
+                jsonData['errors'] = errors
+                jsonData['runcount'] = runcount
+                
+                if 'imgretrieve' in post.keys():
+                    oldwd = os.getcwd()
+                    os.chdir(workingdir)
+
+                    imgfiles = post['imgretrieve'].value.split(' ')
+                    for filename in imgfiles:
+                        if(os.path.exists(filename)):
+                            with open(filename, "rb") as image_file:
+                                jsonData[filename] = base64.b64encode(image_file.read()).decode("utf-8")
+                        else:
+                            print('File '+filename+' not found');
+                    os.chdir(oldwd)
 
                         
         jsonString = bytes(json.dumps(jsonData), 'utf-8')
@@ -54,19 +74,32 @@ def app(environ, start_response):
     
 def initialise(post):
     #print('Initialising activity')
+    oldwd = os.getcwd()
     if(not os.path.exists(post['activityID'].value)):
         os.mkdir(post['activityID'].value)
     os.chdir(post['activityID'].value)
-    if('filename') in post.keys():
+    if(not os.path.exists(post['userID'].value)):
+        os.mkdir(post['userID'].value)
+    os.chdir(post['userID'].value)
+    
+    if('filelist') in post.keys():
         try:
-            if('urlupload') in post.keys():
-                urllib.request.urlretrieve(post['urlupload'].value, post['filename'].value)  
-            else:
-                print("Need to retrieve " + post['filename'].value)
+            filenames = post['filelist'].value.split(' ')
+            for filename in filenames:
+                dirpart = os.path.dirname(filename)
+                if(dirpart != ''):
+                    os.makedirs(dirpart, exist_ok=True)
+                if not os.path.exists(filename):
+                    urltoget = post['urlupload'].value + filename
+                    result = requests.get(urltoget)
+                    open(filename, 'wb').write(result.content)
+
         except Exception as e:
+            print("Error: " + str(e))
             output = "Error: " + str(e)
+            os.chdir(oldwd)
             return output
-        
+    os.chdir(oldwd)  
             
 def checkUserReady(resetpickle, picklefile, workingdir):
     if(not os.path.exists(workingdir)):
@@ -80,8 +113,10 @@ def noteeval(code, resetpickle, picklefile, workingdir):
 
     # Load the environment to be used (this allows persistence, so note 2 gets note 1's vars etc.
     environment = {}
+    environment['__runcount']  = 0
     if resetpickle or picklefile == '':
         environment = {}
+        environment['__runcount']  = 0
     else:
         try:
             with open(picklefile, "rb") as pfile:
@@ -89,6 +124,7 @@ def noteeval(code, resetpickle, picklefile, workingdir):
             pfile.close()
         except IOError:
             environment = {}  
+            environment['__runcount']  = 0
 
     # redirect stdout and stderr
     try:
@@ -96,8 +132,14 @@ def noteeval(code, resetpickle, picklefile, workingdir):
         redir_out = sys.stdout = StringIO()
         old_stderr = sys.stderr
         redir_err = sys.stderr = StringIO()
+        
+        # look at https://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout for timeout
+        # Probably will take a bit of testing...
+        if environment['__runcount']  == 0:
+            exec("import matplotlib\nmatplotlib.use('Agg')\n", environment)
 
         exec(code, environment)
+
         sys.stdout = old_stdout
         sys.stderr = old_stderr
 
@@ -105,12 +147,16 @@ def noteeval(code, resetpickle, picklefile, workingdir):
         # tidy up if there's a problem
         sys.stdout = old_stdout
         sys.stderr = old_stderr
-        output = "Error: " + str(e)
+        output = ""
+        errors = "Error: " + str(e)
         os.chdir(oldwd)
-        return output
+        return  (output, errors, environment['__runcount'])
 
     #get the note's output (and errors)
-    output = str(redir_out.getvalue() + redir_err.getvalue())
+    output = str(redir_out.getvalue())
+    errors = str(redir_err.getvalue())
+    #print(output)
+    environment['__runcount']  = environment['__runcount']+1
         
     # save the environment
     if picklefile != '':
@@ -120,7 +166,7 @@ def noteeval(code, resetpickle, picklefile, workingdir):
 
     # restore the directory and return the output (or error message.)
     os.chdir(oldwd)
-    return output
+    return (output, errors, environment['__runcount'])
     
 #config = configparser.ConfigParser()
 #config.sections()

@@ -61,10 +61,30 @@ class iNotebook
         return json_encode($prep, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
     }
 
+    function checkForImages()
+    {
+        $images = array();
+        foreach($this->cells as $cell)
+        {
+            if('markdown' == $cell->cell_type)
+            {
+                preg_match_all('/!\[[^\]]*\]\((?<url>\S+)(\s+"[^"]+")?\)/', $cell->source, $matches);
+                foreach($matches['url'] as $url)
+                {
+                    $images[] = $url;
+                }
+            }
+        }
+        return $images;
+    }
+
 
     function render_preview()
     {
+        global $CFG;
         $mdConv = new md2html();
+        $imageBaseURL = $CFG['imgroot'].'/'.$_SESSION['projectID'].'/';
+        $mdConv->variables['imgdir'] = $imageBaseURL;
         $output = '<div class="notebook">';
         foreach($this->cells as $cell)
         {
@@ -175,7 +195,10 @@ class iNotebook_markdown extends iNotebook_cell
 
     function dataForErysJson()
     {
+        global $CFG;
         $mdConv = new md2html();
+        $imageBaseURL = $CFG['imgroot'].'/'.$_SESSION['projectID'].'/';
+        $mdConv->variables['imgdir'] = $imageBaseURL;
         $data = parent:: dataForErysJson();
         $data->contentType = "nb_markdown";
         $data->content = "<div class='notes'>".$mdConv->Convert($this->source)."</div>";

@@ -1,4 +1,5 @@
-﻿remove "\[@(.*?)@]" preformated
+﻿var imgdir=""
+remove "\[@(.*?)@]" preformated
 split
 replace "^######(.*)\z" "<:h6>$1"
 replace "^#####(.*)\z" "<:h5>$1"
@@ -22,8 +23,9 @@ replace "''(.*?)''" "<i>$1</i>"
 replace "\[\[(https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])\s*\|\s*([a-zA-Z0-9-_#+=.~;?\\, ]+)\]\]" "<a href='$1'>$2</a>"
 replace "\[\[(?<linkto>@?[a-zA-Z0-9-_#+=~ ./?&:]+)(\|(?<label>[a-zA-Z0-9-_#+=.~;?\\\\/@, ]+))?\]\]" linkbuilder
 replace "([^""'])\b((https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])" "$1<a href='$2'>$2</a>"
-replace "(?<url>https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*/[-A-Za-z0-9+&@#/%=~_|]*\.(jpg|png|gif|jpeg))(\""(?<alttext>.*?)\"")?" "<img src='$1' alt="
-replace "Attach:(?<filename>\w+?\.(jpg|png|gif|jpeg))(\""(?<alttext>.*?)\"")?" image
+replace "(?<url>https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*/[-A-Za-z0-9+&@#/%=~_|]*\.(jpg|png|gif|jpeg))(\""(?<alttext>.*?)\"")?" "<img src='$1'/>"
+replace "!\[(?<alt>[^\]]*)\]\((?<url>\S+)\s+""(?<title>[^""]+)""\)" "<img src='%imgdir%$2' alt='$1' title='$3'/>"
+replace "!\[(?<alt>[^\]]*)\]\((?<url>\S+)\)" "<img src='%imgdir%$2' alt='$1'/>"
 ProcessBlocks
 restoreAll
 replace "\[@(.*?)@]" "<pre>$1</pre>"

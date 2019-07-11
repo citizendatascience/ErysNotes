@@ -18,6 +18,7 @@ done: "<img src='ErysIcons/run.png' alt='Run'>"
 }
         config.hidden = {
             add: true,
+            addsibling: true,
             left: true,
             right: true,
             comment: true,
@@ -28,8 +29,7 @@ config.multiedit = true;
    
 var blockeditor = nb_OutlineRoot('blockhost', false, 'blockctrls', config);
 blockeditor.enableEdit(true);
-blockeditor.editors['nb_markdown'] = new nb_markdownBlock();
-blockeditor.editors['pythonCode'] = new nb_codeBlock();
-blockeditor.editors['basic'] = new nb_outlineBlocktypeBase();
+blockeditor.addEditor('nb_markdown', new nb_markdownBlock());
+blockeditor.addEditor('pythonCode', new nb_codeBlock());
 //blockeditor.contentClasses = contentClasses;
 blockeditor.unserialize(content);

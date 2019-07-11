@@ -1,5 +1,4 @@
 <?php
-include_once('config.php');
 
 // Do not use this in production (or even public demo) sites. 
 // It is a quick start for development behind a very secure firewall only.
