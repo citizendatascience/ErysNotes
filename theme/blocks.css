@@ -14,9 +14,15 @@
     padding-bottom: 3px;
 }
 
+#blockctrls{
+    padding:0;
+    margin: 0;
+}
+
 .blockCtrls{
     border: 1px solid #808080;
     background-color: #ccc;
+    padding:0;
 }
 
 .blockBtn{
@@ -26,11 +32,18 @@
     background-color: #fbf4ca;
     color: blue;
     cursor: pointer;
+    margin-top: 0px;
     margin-left: 5px;
     font-size: 20px;
     padding:0;  
     height:24px; 
     min-height:24px; 
+    vertical-align: top;
+}
+
+.blockBtn img{
+    margin: 0px;
+    padding:0;  
     vertical-align: top;
 }
 

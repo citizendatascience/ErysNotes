@@ -29,6 +29,11 @@
                     "title": "Example with pictures",
                     "description": "Example with pictures",
                     "id": "aaafb8c7083983505d63e53b0d9941f79641cbe0"
+                },
+                {
+                    "title": "NewNotebook",
+                    "description": "Notebook creation & editing development",
+                    "id": "5eb269a674bb543a6d6c422ad8c67e4ec341cdba"
                 }
             ]
         }
