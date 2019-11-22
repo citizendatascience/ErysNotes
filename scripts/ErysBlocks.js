@@ -1,71 +1,16 @@
-﻿function processMarkdown(fromID, toID)
+﻿
+function processMarkdown(fromID, toID)
 {
+    var senddata = {markdown: document.getElementById(fromID).value, target: toID };
     var url = "ajax/md2html_service.php";
-    document.body.style.cursor = 'wait';
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function ()
-    {
-        if (xmlHttp.readyState == 4)
-        {
-            if (xmlHttp.status == 200)
-            {
-                try
-                {
-                    var response = JSON.parse(xmlHttp.responseText);
-                    processAjaxResponse(response);
-                } catch (e)
-                {
-                    alert("JSON parse error in processMarkdown\nURL: " + url + "\n" + e + "\n\n" + xmlHttp.responseText);
-                }
-            }
-            else
-            {
-                alert("Http response code " + xmlHttp.status + " when retrieving " + url);
-            }
-            document.body.style.cursor = '';
-        }
-    }
-    xmlHttp.open("POST", url, true);
-    data = new FormData();
-    data.append("markdown", document.getElementById(fromID).value);
-    data.append("target", toID);
-    xmlHttp.send(data);
+    ajaxAction(url, senddata);
 }
 
 function processPython(fromID, pyidx, source)
 {
+    var senddata = { id: fromID, pyidx: pyidx, source: source };
     var url = "ajax/callpython_service.php";
-    document.body.style.cursor = 'wait';
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function ()
-    {
-        if (xmlHttp.readyState == 4)
-        {
-            if (xmlHttp.status == 200)
-            {
-                try
-                {
-                    var response = JSON.parse(xmlHttp.responseText);
-                    processAjaxResponse(response);
-                } catch (e)
-                {
-                    alert("JSON parse error in processPython\nURL: " + url + "\n" + e + "\n\n" + xmlHttp.responseText);
-                    document.write(xmlHttp.responseText);
-                }
-            }
-            else
-            {
-                alert("Http response code " + xmlHttp.status + " when retrieving " + url);
-            }
-            document.body.style.cursor = '';
-        }
-    }
-    xmlHttp.open("POST", url, true);
-    data = new FormData();
-    data.append("id", fromID);
-    data.append("source", source);
-    data.append("pyidx", pyidx);
-    xmlHttp.send(data);
+    ajaxAction(url, senddata);
 }
 
 nb_markdownBlock = function ()
@@ -97,6 +42,7 @@ nb_codeBlock = function ()
 
     this.initEdit = function (id, editnode, source)
     {
+        alert(".initEdit code block " + block.id);
         //editnode.innerHTML = "Code Override</br><textarea id='" + id + "_editarea' rows='12' style='margin:2px; width:95%'>" +source + "</textarea>";
     }
 
@@ -133,7 +79,6 @@ nb_codeBlock = function ()
 
     this.initialise = function (block)
     {
-        //alert("Initialising " + block.id);
         block.contentnode.innerHTML = '';
         block.editornode = document.createElement('textarea');
         block.editornode.id = block.id + "_editor";

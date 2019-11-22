@@ -154,6 +154,11 @@ function GetLearnerView($projectID, $userID, &$pageData)
     initialisePython($projectID, $userID, $filelist);
     if($nb != false)
     {
+        if((!isset($status['nb']))||($status['nb']!=$nb))
+        {
+            $status['nb'] = $nb;
+            file_put_contents($userRoot.'status.ser', serialize($status));
+        }
         $notebook = new iNotebook(file_get_contents($projFilesRoot.$nb));
         $pageData['toolbar'] = "<div id='blockctrls'></div>";
         $pageData['main'] =  "<div id='blockhost'></div>";

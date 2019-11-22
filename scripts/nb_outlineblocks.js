@@ -714,7 +714,7 @@ function nb_outlineControls(ctrlsNode, isRoot, config)
         //#endGenCode
 
 
-        sp = document.createElement('span');
+        var sp = document.createElement('span');
         sp.innerHTML = "&nbsp;&nbsp;";
         this.ctrlsNode.appendChild(sp);
 
@@ -812,7 +812,7 @@ function nb_outlineControls(ctrlsNode, isRoot, config)
         //#endGenCode
 
 
-        sp = document.createElement('span');
+        var sp = document.createElement('span');
         sp.innerHTML = "&nbsp;&nbsp;";
         this.ctrlsNode.appendChild(sp);
 
@@ -940,7 +940,7 @@ function nb_outlineControls(ctrlsNode, isRoot, config)
         //#endGenCode
 
 
-        sp = document.createElement('span');
+        var sp = document.createElement('span');
         sp.innerHTML = "&nbsp;&nbsp;";
         this.ctrlsNode.appendChild(sp);
 
@@ -975,7 +975,7 @@ function nb_outlineControls(ctrlsNode, isRoot, config)
         //#endGenCode
 
 
-        sp = document.createElement('span');
+        var sp = document.createElement('span');
         sp.innerHTML = "&nbsp;&nbsp;";
         this.ctrlsNode.appendChild(sp);
 

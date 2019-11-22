@@ -31,5 +31,14 @@ var blockeditor = nb_OutlineRoot('blockhost', false, 'blockctrls', config);
 blockeditor.enableEdit(true);
 blockeditor.addEditor('nb_markdown', new nb_markdownBlock());
 blockeditor.addEditor('pythonCode', new nb_codeBlock());
+
+blockeditor.Save = function ()
+{
+    var senddata = { notebook: this.serialize()};
+    var url = "ajax/saveNotebook.php";
+    ajaxAction(url, senddata);
+}
+
 //blockeditor.contentClasses = contentClasses;
 blockeditor.unserialize(content);
+

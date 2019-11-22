@@ -19,10 +19,10 @@
     margin: 0;
 }
 
-.blockCtrls{
+.blockCtrls {
     border: 1px solid #808080;
     background-color: #ccc;
-    padding:0;
+    padding: 4px;
 }
 
 .blockBtn{

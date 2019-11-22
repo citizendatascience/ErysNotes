@@ -50,6 +50,48 @@ function ajaxLinkClick(url)
     xmlHttp.send(null);
 }
 
+function ajaxAction(url, senddata)
+{
+    document.body.style.cursor = 'wait';
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function ()
+    {
+        if (xmlHttp.readyState == 4)
+        {
+            if (xmlHttp.status == 200)
+            {
+                try
+                {
+                    var response = JSON.parse(xmlHttp.responseText);
+                    processAjaxResponse(response);
+                } catch (e)
+                {
+                    if(confirm("JSON parse error on response from URL:" + url + "\n" + e + "\n\nView the response?"))
+                        document.write(xmlHttp.responseText);
+                }
+            }
+            else
+            {
+                alert("Http response code " + xmlHttp.status + " when retrieving " + url);
+            }
+            document.body.style.cursor = '';
+        }
+    }
+    if (senddata != undefined)
+    {
+        xmlHttp.open("POST", url, true);
+        data = new FormData();
+        for(key in senddata)
+            data.append(key, senddata[key]);
+        xmlHttp.send(data);
+    }
+    else
+    {
+        xmlHttp.open("GET", url, true);
+        xmlHttp.send(null);
+    }
+}
+
 // This is used by NBWebsites Form wizard generated ajax forms, which include the URL in the form.
 function submitForm(formid, button)
 {
