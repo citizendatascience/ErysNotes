@@ -4,7 +4,7 @@ require_once('corelib/templateMerge.php');
 require_once('lib/md2html.php');
 require_once('lib/iNotebook.php');
 include_once('corelib/lti.php');
-include_once('lib/tmpDevSecretManager.php');
+include_once('lib/minimalSecretManager.php');
 include_once('lib/forms.php');
 include_once('lib/callpython.php');
 

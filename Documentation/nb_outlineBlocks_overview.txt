@@ -1,0 +1,106 @@
+///nb_JSSection nb_outlineBlocksBase
+function nb_outlineBlocksBase()
+{
+    if (nb_outlineBlocksBase.count === undefined)
+    {
+        nb_outlineBlocksBase.count = 0;
+        nb_outlineBlocksBase.blockLookup = [];
+        nb_outlineBlocksBase.config = {};
+        nb_outlineBlocksBase.config.buttons = {
+        nb_outlineBlocksBase.config.hidden = {};
+        nb_outlineBlocksBase.mergeConfig = function ()
+        nb_outlineBlocksBase.selectedBlock = null;
+        nb_outlineBlocksBase.editingBlock = null;
+
+        //#macroButtons nb_outlineBlocksBase : addsibling add remove edit done cancel up down left right comment collapse expand
+        nb_outlineBlocksBase.[button]Clicked = function (e)
+
+        nb_outlineBlocksBase.selectClickedBlock = function (e)
+        nb_outlineBlocksBase.editClickedBlock = function (e)
+        nb_outlineBlocksBase.setBlockClass = function (blockID, toClass)
+        nb_outlineBlocksBase.setBlockType = function (blockID, toType)
+        nb_outlineBlocksBase.enableEditOnClickedBlock = function (e)
+        nb_outlineBlocksBase.selectRoot = function (e)
+        nb_outlineBlocksBase.selectBlock = function (id)
+    }
+
+    this.id = 'ID' + nb_outlineBlocksBase.count;
+    this.addBlock = function (after, select, initialize)
+    this.addControls = function (isRoot, config)
+    this.childType = this.contentType;  // default that can be overridden. Ideally also alow blocks to be replaced with a different type
+    this.serialize = function (asobj)
+    this.getStructure = function (asobj)
+    this.unserialize = function (data)
+    this.reindex = function (recurse)
+    this.insertAt = function (block, index)
+
+///nb_JSSection nb_outlineControls
+function nb_outlineControls(ctrlsNode, isRoot, config)
+{
+    this.ctrlsNode = ctrlsNode;
+    this.config = config;
+    this.createCtrlButton = function (name, callback)
+    
+    //#button save
+    this.saveBtn = this.createCtrlButton('save', nb_outlineBlocksBase.saveClicked);
+    this.enableSave = function (enable)
+    this.hideSave = function (hide)
+    
+    //#button addsibling  (not in root)
+    //#button add
+    //#button remove  (not in root)
+        //#button edit  (not in root)
+    //#button done
+        //#button cancel (not in root)
+        //#button up (not in root)
+        //#button down (not in root)
+         //#button left (not in root)
+         //#button right (not in root)
+        //#button comment (not in root)
+        //#button collapse (not in root)
+        //#button expand
+        
+///nb_JSSection nb_OutlineRoot
+function nb_OutlineRoot(rootid, readonly, ctrlsid, config)
+{
+    nb_outlineBlocksBase.call(this);
+    this.config = nb_outlineBlocksBase.mergeConfig(nb_outlineBlocksBase.config, config);
+    this.ctrlsDisplayNode = ctrlsid == undefined ? null : document.getElementById(ctrlsid);
+    this.readonly = readonly == undefined ? false : readonly;
+    this.node = document.getElementById(rootid);
+    this.owner = this;
+    this.depth = 0;
+    this.editors = [];
+    this.defaultEditor = new nb_outlineBlocktypeBase();
+    this.defaultChild = '';
+    this.addEditor = function(name, editor)
+    this.Save = function()
+}
+
+//# This needs some thought and fixing before integration.
+//# Probably take nodes as parameters.
+nb_outlineBlocktypeBase = function()
+{
+    this.name = "nb_outlineBlocktypeBase";
+    this.initEdit = function(block)
+    this.render = function(block)
+}
+
+///nb_JSSection nb_outlineBlock
+function nb_outlineBlock(owner)
+{
+    this.owner = owner;
+    nb_outlineBlocksBase.call(this);
+    this.node = document.createElement('div');
+    this.contentnode = document.createElement('div');
+    this.contentclass = '';
+    this.collapsed = false;
+    this.contentType = '';
+
+    this.editStart = function ()
+    this.getBlockSettings = function()
+    this.editEnd = function (saveIt)
+    this.setContentclass = function (newclass)
+    this.setContentType = function (newType)
+    this.enableMoveButtons = function ()
+}

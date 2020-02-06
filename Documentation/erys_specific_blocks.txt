@@ -1,0 +1,10 @@
+nb_codeBlock = function ()
+{
+    nb_outlineBlocktypeBase.call(this);
+    this.initEdit = function (id, editnode, source) // not used n this block?
+    this.editEnd = function (block) // not used n this block?
+    this.render = function (block) // called when run
+    this.enableControls = function (block) // called when selected
+    this.initialise = function (block) // called when created
+    this.cleanup = function (block)
+}

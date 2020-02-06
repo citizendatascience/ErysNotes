@@ -1,0 +1,25 @@
+    5  sudo apt install apt-transport-https ca-certificates curl software-properties-common
+    6  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    7  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    8  sudo apt update
+    9  apt-cache policy docker-ce
+   10  sudo apt install docker-ce
+   11  sudo systemctl status docker
+   12  sudo usermod -aG docker ubuntu
+   14  docker run hello-world
+   15  docker ps
+   16  sudo apt -y install apache2
+   17  apt-get -y install php7.2 libapache2-mod-php7.2
+   18  sudo apt-get -y install php7.2 libapache2-mod-php7.2
+   19  cd erysdocker
+   21  pico Dockerfile
+   23  docker build -t erysdocker
+   24  docker build -t erysdocker .
+   25  docker run -p 8080:80 -d erysdocker
+   26  cd /var/www
+   27  ls
+   28  ls -l
+   29  sudo chown ubuntu html
+   30  sudo chown root html
+   31  cd html
+   32  pico config.php

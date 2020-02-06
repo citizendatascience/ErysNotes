@@ -1,7 +1,7 @@
 <?php
 require_once('../config.php');
 include_once('../corelib/lti.php');
-include_once('../lib/tmpDevSecretManager.php');
+include_once('../lib/minimalSecretManager.php');
 include_once('../lib/callpython.php');
 
 $userinfo = checkLTISession($errorMsg);

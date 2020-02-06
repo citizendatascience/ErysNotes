@@ -1,7 +1,7 @@
 <?php
 function checkLTISession(&$errorMsg)
 {
-    $secretManager = new tmpDevSecretManager();
+    $secretManager = new minimalSecretManager();
     $errorMsg = false;
     session_start();
 	if((isset($_REQUEST['lti_message_type']))||(!isset($_SESSION['ltisession'])))
