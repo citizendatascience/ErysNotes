@@ -1,11 +1,11 @@
 <?php
-// Classes to support ipynb style interactive notebooks. 
+// Classes to support ipynb style interactive notebooks.
 // (Missing Py from the name as I expect this library to also support non-Python notebooks eventually.)
-require_once('lib/geshi.php');
+require_once(__DIR__.'/geshi.php');
 
 class iNotebook
 {
-    var $cells; // Erysnotes extended format will have nested cells, ipynb just has root cells. 
+    var $cells; // Erysnotes extended format will have nested cells, ipynb just has root cells.
     var $metadata; // For now just the JSON data from an ipynb file
 
     function __construct($json_source = false)
@@ -34,7 +34,7 @@ class iNotebook
         }
     }
 
-    // This makes the JSON identical to an iPython 4.2 notebook - useful for testing, but it will need to evolve 
+    // This makes the JSON identical to an iPython 4.2 notebook - useful for testing, but it will need to evolve
     function toJSON()
     {
         $prep = new stdClass();
@@ -59,6 +59,87 @@ class iNotebook
         $prep->nbformat = 4;
         $prep->nbformat_minor = 2;
         return json_encode($prep, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+    }
+
+    static function fromErysJson($json)
+    {
+        $nb = new iNotebook();
+        $data = json_decode($json);
+        foreach($data->children as $cellid=>$cell)
+        {
+            switch($cell->contentType)
+            {
+                case 'nb_markdown':
+                    $tmpCell = new iNotebook_markdown((object)array('cell_type' => 'markdown'));
+                    $tmpCell->source = $cell->source;
+                    $nb->cells[] = $tmpCell;
+                    break;
+
+                case 'pythonCode':
+                    $tmpCell = new iNotebook_pycode((object)array('cell_type' => 'code'));
+                    $tmpCell->source = $cell->source;
+
+                    $output_count = preg_match_all('%<div class\s*=\s*["\']outputPart\s+(?<type>\w+)["\']\s*>(?<content>.*?)<!--end-\k<type>-->\s*</div>%sm', $cell->content, $matches);
+
+                    //$output_count = preg_match_all('%<pre[^>]*>(?<content>.*?)</pre>|src\s*=\s*[\'"]data:image/png;base64,\s*(?<pngimage>[a-zA-Z0-9+/]+=*)%sim', $cell->content, $matches);
+                    $tmpCell->outputs = array();
+                    //file_put_contents("C:\\Users\\niall_000\\Desktop\\tmp\\{$cellid}.txt", $cell->content."\r\n\r\n".print_r( $matches, true));
+                    $tmpCell->execution_count = intval($cell->execution_count);
+                    for($n=0; $n<$output_count; $n++)
+                    {
+                        $part_count = preg_match_all('%<pre[^>]*>(?<content>.*?)</pre>|src\s*=\s*[\'"]data:image/png;base64,\s*(?<pngimage>[a-zA-Z0-9+/]+=*)%sim', $matches['content'][$n], $matches2);
+                        $tmpOutput = new iNotebook_pyoutput();
+
+                        switch($matches['type'][$n])
+                        {
+                            case 'stream':
+                                $tmpOutput->text = $matches2['content'][0];
+                                $tmpOutput->output_type = "stream";
+                                $tmpOutput->stream_name = "stdout";
+                                //exit("I need to deal with saving stream content. Line ".__LINE__." in ".__FILE__);
+                                break;
+                            case 'display_data':
+                                $tmpOutput->output_type = "display_data";
+                                for($n2=0; $n2<$part_count; $n2++)
+                                {
+                                    if(strlen($matches2['pngimage'][$n2]))
+                                    {
+                                        $tmpOutput->png = $matches2['pngimage'][$n2];
+                                    }
+                                    else
+                                    {
+                                        $tmpOutput->text = $matches2['content'][$n2];
+                                    }
+                                }
+                             //   echo '<pre>'.htmlentities(print_r($matches2, true)).'</pre>';
+                             //   exit("I need to deal with saving display_data content. Line ".__LINE__." in ".__FILE__);
+                                break;
+                            default:
+                                //exit("I need to deal with saving {$matches['type'][$n]} content.");
+                                break;
+                        }
+
+                        /*$tmpOutput->text = $matches['content'][$n];
+
+                        for($n2=0; $n2<$part_count; $n2++)
+                        {
+                            if(strlen($matches2['pngimage'][$n]))
+                            {
+                                $tmpOutput->png = $matches2['pngimage'][$n];
+                            }
+                            else
+                            {
+                                $tmpOutput->output_type = "stream";
+                            }
+                        }//*/
+                        if((strlen($tmpOutput->text))||(strlen($tmpOutput->png)))
+                            $tmpCell->outputs[] = $tmpOutput;
+                    }
+                    $nb->cells[] = $tmpCell;
+                    break;
+            }
+        }
+        return $nb;
     }
 
     function checkForImages()
@@ -136,6 +217,8 @@ abstract class iNotebook_cell
         $this->cell_type = $data->cell_type;
         if(isset($data->metadata))
             $this->metadata = $data->metadata;
+        else
+            $this->metadata = new stdClass();
         if(isset($data->source))
         {
             if(is_array($data->source))
@@ -184,7 +267,7 @@ class iNotebook_markdown extends iNotebook_cell
     function render_preview($mdConv)
     {
         //$mdsource = implode("", $this->source);
-        return "<div class='notes'>".$mdConv->Convert($this->source)."</div>";        
+        return "<div class='notes'>".$mdConv->Convert($this->source)."</div>";
     }
 
     function dataForJson()
@@ -219,9 +302,9 @@ class iNotebook_pycode extends iNotebook_cell
         parent::__construct($data);
         $this->collapsed = true; // default value
         $this->autoscroll = false; // default value
-        $this->execution_count = $data->execution_count;
+        $this->execution_count = isset($data->execution_count) ? $data->execution_count : 0;
         $this->outputs = array();
-        if(sizeof($data->outputs))
+        if((isset($data->outputs))&&(sizeof($data->outputs)))
         {
             foreach($data->outputs as $op)
             {
@@ -232,18 +315,19 @@ class iNotebook_pycode extends iNotebook_cell
 
     function render_preview($mdConv)
     {
-        $geshi = new GeSHi($this->source, 'python'); 
+        $geshi = new GeSHi($this->source, 'python');
         $output = "<div class='code'>".$geshi->parse_code()."</div>";
         if(sizeof($this->outputs))
         {
             foreach($this->outputs as $op)
             {
-                $output .= $this->displayOutput($op);
+               // $output .= $this->displayOutput($op);
+                $output .= '<div class="output">'.$op->render().'</div>';
             }
         }
         return $output;
     }
-    
+
     function dataForJson()
     {
         $data = new stdClass();
@@ -267,14 +351,17 @@ class iNotebook_pycode extends iNotebook_cell
         $data->contentType = "pythonCode";
         $data->execution_count = $this->execution_count;
         $data->outputs = array();
+        $data->content = '';
         foreach($this->outputs as $op)
         {
-            $data->outputs[] = $op->dataForJson();
+           //# $data->outputs[] = $op->dataForJson();
+            $data->content .= $op->render();
         }
         $data->source = $this->source;
         return $data;
     }
 
+    /*
     function displayOutput($op)
     {
         $output = '<div class="output">';
@@ -294,7 +381,7 @@ class iNotebook_pycode extends iNotebook_cell
                 $imagepng = 'image/png';
                 if(isset($op->data->$imagepng))
                 {
-                    $output .=  '<img src="data:image/png;base64,' . $op->data->$imagepng .'"/>';
+                    $output .=  '<img src="data:image/png;base64, ' . $op->data->$imagepng .'"/>';
                 }
                 break;
             default:
@@ -303,6 +390,7 @@ class iNotebook_pycode extends iNotebook_cell
         }
         return $output.'</div>';
     }
+    */
 
 }
 
@@ -318,29 +406,54 @@ class iNotebook_pyoutput
     var $png;
     var $data;
 
-    function __construct($data)
+    function __construct($data=false)
     {
-        if(isset($data->metadata))
-            $this->metadata = $data->metadata;
-        $this->output_type = $data->output_type;
-        if($this->output_type == 'stream')
+        if($data)
         {
-            $this->stream_name = $data->name;
-            $this->text = implode('', $data->text);
+            if(isset($data->metadata))
+                $this->metadata = $data->metadata;
+            $this->output_type = $data->output_type;
+            if($this->output_type == 'stream')
+            {
+                $this->stream_name = $data->name;
+                $this->text = implode('', $data->text);
+            }
+            else
+            {
+                // the ipynb notebook data names (mimetypes) are not allowed in PHP, so use these vars.
+                $textplain = 'text/plain';
+                $imgpng = 'image/png';
+                $json = 'application/json';
+
+                $this->stream_name = false;
+                $this->text = isset($data->data->$textplain) ? implode('', $data->data->$textplain) : false;
+                $this->png = isset($data->data->$imgpng) ? $data->data->$imgpng : false;
+                $this->data = isset($data->data->$json) ? $data->data->$json : false;
+            }
         }
         else
         {
-            // the ipynb notebook data names (mimetypes) are not allowed in PHP, so use these vars.
-            $textplain = 'text/plain';
-            $imgpng = 'image/png';
-            $json = 'application/json';
-
-            $this->stream_name = false;
-            $this->text = isset($data->data->$textplain) ? implode('', $data->data->$textplain) : false;
-            $this->png = isset($data->data->$imgpng) ? $data->data->$imgpng : false;
-            $this->data = isset($data->data->$json) ? $data->data->$json : false;
+            $this->metadata = new stdClass();
+            $this->output_type = false;
+            $this->execution_count = false; // only used for execute_result
+            $this->stream_name = false; // 'stdout' | 'stderror';
+            $this->text = false; // text or data->['text/plain']
+            $this->png = false;
+            $this->data = false;
         }
+    }
 
+    function render()
+    {
+        $out = "<div class=\"outputPart {$this->output_type}\">";
+        if($this->text)
+            $out .= '<pre>'.$this->text.'</pre>';
+        if($this->png)
+            $out .= "<div class='image'><img src='data:image/png;base64, {$this->png}'/></div>";
+        if($this->data)
+            $out .= '<pre>'.$this->data.'</pre>'; //# should be pretty printed I think.
+        $out .= "<!--end-{$this->output_type}--></div>";
+        return $out;
     }
 
     function dataForJson()
@@ -371,6 +484,7 @@ class iNotebook_pyoutput
         return $data;
     }
 
+    //# No longer used? Replaced by render for sending ErysJson notebook
     function dataForErysJson()
     {
         $data = new stdClass();

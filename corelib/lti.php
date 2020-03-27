@@ -17,7 +17,8 @@ function checkLTISession(&$errorMsg)
 function getRequestURL()
 {
 	$pageURL = ((isset($_SERVER["HTTPS"]))&&(@$_SERVER["HTTPS"] == "on")) ? "https://" : "http://";
-	if ($_SERVER["SERVER_PORT"] != "80")
+    $defaultPort = ((isset($_SERVER["HTTPS"]))&&(@$_SERVER["HTTPS"] == "on")) ? 443 : 80;
+	if ($_SERVER["SERVER_PORT"] != $defaultPort)
 	{
 	    $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
 	}
@@ -88,6 +89,7 @@ class ltiSession
         else
         {
             $error = "LTI signature mismatch.";
+
         	return false;
         }
     }

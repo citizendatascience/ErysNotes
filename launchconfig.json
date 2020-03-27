@@ -7,6 +7,10 @@
         {
             "name": "Student One",
             "role": "Learner"
+        },
+        {
+            "name": "Student Two",
+            "role": "Learner"
         }
     ],
     "contexts": [
@@ -34,6 +38,11 @@
                     "title": "NewNotebook",
                     "description": "Notebook creation & editing development",
                     "id": "5eb269a674bb543a6d6c422ad8c67e4ec341cdba"
+                },
+                {
+                    "title": "TimeSries Fix",
+                    "description": "Example with a graph in original notebook",
+                    "id": "3ddeb510fb7dbe0d6d52065a4f04e93939333e64"
                 }
             ]
         }

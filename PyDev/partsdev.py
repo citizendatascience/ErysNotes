@@ -66,12 +66,16 @@ def app(environ, start_response):
                         
         jsonString = bytes(json.dumps(jsonData), 'utf-8')
 
-    start_response('200 OK', [('Content-Type', 'application/json')])
-    return [jsonString]
-
-    #start_response('200 OK', [('Content-Type', 'text/html')])
-    #return [html]
-    
+        start_response('200 OK', [('Content-Type', 'application/json')])
+        return [jsonString]
+    else:
+        status = '200 OK'
+        output = b'Erys Python service is running, but needs post data to do anything useful.\n'
+        
+        response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
+        start_response(status, response_headers)
+        return [output]
+        
 def initialise(post):
     #print('Initialising activity')
     oldwd = os.getcwd()
@@ -134,6 +138,9 @@ def noteeval(code, resetpickle, picklefile, workingdir):
         redir_err = sys.stderr = StringIO()
         
         # look at https://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout for timeout
+        # Another option is at https://pypi.org/project/func-timeout/
+        # Look at os.setuid(uid) for using a different user (needs a pool, and copying files...) 
+        # https://docs.python.org/3/library/os.html#os.setuid
         # Probably will take a bit of testing...
         if environment['__runcount']  == 0:
             exec("import matplotlib\nmatplotlib.use('Agg')\n", environment)

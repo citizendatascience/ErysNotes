@@ -457,8 +457,14 @@ function nb_outlineBlocksBase()
             else
                 serialized.content = this.contentnode.innerHTML;
         }
-        serialized.source = this.source;
+       // this.owner.editors[this.contentType].getSource
+        if  ((this.owner.editors[this.contentType] != undefined)&&(this.owner.editors[this.contentType].getSource != undefined))
+            serialized.source = this.owner.editors[this.contentType].getSource(this);
+        else
+            serialized.source = this.source;
         serialized.contentType = this.contentType;
+        if ((this.owner.editors[this.contentType] != undefined) && (this.owner.editors[this.contentType].serializeExtras != undefined))
+            this.owner.editors[this.contentType].serializeExtras(this, serialized);
         serialized.children = Array();
         for (var child = this.node.firstChild; child !== null; child = child.nextSibling)
         {
@@ -499,13 +505,21 @@ function nb_outlineBlocksBase()
             if (data.content != undefined)
                 this.content = data.content;
             else
-                this.content = data.source;
+                this.content = "";//data.source;
             this.contentnode.innerHTML = data.content;
             if (data.source != undefined)
                 this.source = data.source;
             else
                 this.source = data.content;
+       //     if (data.execution_count != undefined)
+       //         this.execution_count = data.execution_count;
+       //     else
+       //         this.execution_count = '-';
+          //  if ((data.outputs != undefined) && (data.outputs[0] != undefined))
+          //      alert(data.outputs[0].text);
             this.contentType = data.contentType;
+            if ((this.owner.editors[this.contentType] != undefined) && (this.owner.editors[this.contentType].unserializeExtras != undefined))
+                this.owner.editors[this.contentType].unserializeExtras(this, data);
             if ((this.owner.editors[this.contentType] != undefined) && (this.owner.editors[this.contentType].initialise != undefined))
                 this.owner.editors[this.contentType].initialise(this);
             else
@@ -513,12 +527,11 @@ function nb_outlineBlocksBase()
                     alert("Unregistered content type (lacks initialise method) " + this.contentType);
                 else
                     alert("Undefined content type");
-
         }
         else
         {
             this.content = '';
-            this.contentType = 'unknown_fix_this';
+            //this.contentType = 'unknown_fix_this2';
         }
         if ((this != this.owner) && (nb_outlineBlocksBase.selectedBlock == undefined))
         {
@@ -528,6 +541,11 @@ function nb_outlineBlocksBase()
         {
             block = this.addBlock(false, false, false);
             block.unserialize(data.children[i]);
+        }
+        // This ensures enableControls was last run for the currently selected block.
+        if ((this == this.owner) && (nb_outlineBlocksBase.selectedBlock != undefined))
+        {
+            nb_outlineBlocksBase.selectBlock(nb_outlineBlocksBase.selectedBlock);
         }
     }
 
@@ -1152,10 +1170,17 @@ function nb_outlineBlock(owner)
     this.node.id = this.id;
     this.addControls(false, owner.config);
     //this.ctrlsNode.hidden = true;
+    //Info node for execution_count
+    this.infonode = document.createElement('div');
+    this.infonode.id = this.id + "_info";
+    this.infonode.classList.add('block_info');
+    this.node.insertBefore(this.infonode, this.ctrlsNode);
+
     this.contentnode = document.createElement('div');
     this.contentnode.id = this.id + "_content";
     this.contentnode.innerHTML = "Content for "+this.id;
     this.node.insertBefore(this.contentnode, this.ctrlsNode);
+
     this.node.addEventListener("click", nb_outlineBlocksBase.selectClickedBlock);
     this.node.addEventListener("dblclick", nb_outlineBlocksBase.editClickedBlock);
     this.contentclass = '';

@@ -29,10 +29,10 @@ if(strpos($userinfo->params['roles'], 'Instructor')!==false)
 else
     GetLearnerView($projectID, $userID,  $template->pageData);
 
-if(error_get_last() == null)
+//if(error_get_last() == null)
     echo $template->render();
-else
-    var_dump(error_get_last());
+//else
+//    var_dump(error_get_last());
 
 
 function GetInstructorView($projectID, $userID, &$pageData)
@@ -159,7 +159,7 @@ function GetLearnerView($projectID, $userID, &$pageData)
             $status['nb'] = $nb;
             file_put_contents($userRoot.'status.ser', serialize($status));
         }
-        $notebook = new iNotebook(file_get_contents($projFilesRoot.$nb));
+        $notebook = new iNotebook(file_get_contents($userRoot.$nb));
         $pageData['toolbar'] = "<div id='blockctrls'></div>";
         $pageData['main'] =  "<div id='blockhost'></div>";
         $pageData['scriptStart'] = 'content = '. $notebook->toErysJson() . ';';

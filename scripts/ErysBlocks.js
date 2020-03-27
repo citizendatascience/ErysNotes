@@ -30,9 +30,16 @@ nb_markdownBlock = function ()
         }
     }
 
+    this.enableControls = function (block)
+    {
+        block.controls.enableEdit(true);
+        block.controls.enableDone(false);
+    }
+
     this.initialise = function (block)
     {
         block.contentnode.innerHTML = block.content;
+        this.enableControls(block);
     }
 }
 
@@ -49,6 +56,27 @@ nb_codeBlock = function ()
     this.editEnd = function (block)
     {
         alert("Edit End for code block called");
+    }
+
+    this.getSource = function(block)
+    {
+        return block.editor.getValue();
+    }
+
+    this.serializeExtras = function (block, serialized)
+    {
+        if (block.execution_count != undefined)
+            serialized.execution_count = block.execution_count;
+        if (document.getElementById(block.id + "_info") != undefined)
+            serialized.execution_count = document.getElementById(block.id + "_info").innerText;
+    }
+
+    this.unserializeExtras = function (block, data)
+    {
+        if (data.execution_count != undefined)
+            block.execution_count = data.execution_count;
+        else
+            block.execution_count = '-';
     }
 
     this.render = function (block)
@@ -89,7 +117,7 @@ nb_codeBlock = function ()
         block.outputnode.id = block.id + "_output";
         block.outputnode.innerHTML = block.content;
         block.contentnode.insertBefore(block.outputnode, null);
-
+        block.infonode.innerHTML = block.execution_count;
         block.contentnode.style.color = '';
         block.outputnode.style.color = '#003300';
 

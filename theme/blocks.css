@@ -67,8 +67,17 @@
 
 .block{
     margin: 3px;
+    position: relative;
     margin-left: 15px;
     padding-left:50px;
+}
+
+.block_info{
+    width: 40px;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    background-color: yellow;
 }
 
 .collapsed_summary{

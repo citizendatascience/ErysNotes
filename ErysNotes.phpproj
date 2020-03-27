@@ -37,7 +37,6 @@
     <Compile Include="lib\iNotebook.php" />
     <Compile Include="lib\md2html.php" />
     <Compile Include="lib\minimalSecretManager.php" />
-    <Compile Include="lib\tmpDevSecretManager.php" />
     <Compile Include="service\getFile.php" />
     <Compile Include="theme\basic-gu.css" />
     <Compile Include="theme\logo-gu-retina.png" />

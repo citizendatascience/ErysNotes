@@ -25,13 +25,14 @@ $result = json_decode(runCell($projectID, $userID, $source, $getimages));
 
 $output[$_REQUEST['id'].'_output'] = '';
 if(strlen($result->errors))
-    $output[$_REQUEST['id'].'_output'] .= '<pre style="color: #aa0000;">'.print_r($result->errors, true).'</pre>';
+    $output[$_REQUEST['id'].'_output'] .= '<div class="outputPart stream"><pre style="color: #aa0000;">'.print_r($result->errors, true).'</pre><!--end-stream--></div>';
 
-$output[$_REQUEST['id'].'_output'] .= '<pre>'.print_r($result->output, true).'</pre>';
+$output[$_REQUEST['id'].'_output'] .=  "<div class=\"outputPart stream\"><pre>".print_r($result->output, true)."</pre><!--end-stream--></div>";
+$output[$_REQUEST['id'].'_info'] = $result->runcount;
 foreach($getimages as $img)
 {
     if(isset($result->$img))
-        $output[$_REQUEST['id'].'_output'] .= "<div class='image'><img src='data:image/png;base64, {$result->$img}'/></div>";
+        $output[$_REQUEST['id'].'_output'] .= "<div class=\"outputPart display_data\"><div class='image'><img src='data:image/png;base64, {$result->$img}'/></div><!--end-display_data--></div>";
 }
 
 file_put_contents($userRoot.'status.ser', serialize($status));
@@ -55,3 +56,4 @@ function updateToErys($source, &$plibname, &$imgnum, &$getimages)
     }
     return $source;
 }
+ 
