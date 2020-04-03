@@ -10,6 +10,7 @@ import configparser
 #import urllib.request
 import requests
 import base64
+from func_timeout import func_timeout, FunctionTimedOut
 
 def application(environ, start_response):
     # I'm hoping this next line isn't needed by apache. 
@@ -68,9 +69,13 @@ def application(environ, start_response):
 
     start_response('200 OK', [('Content-Type', 'application/json')])
     return [jsonString]
+    else:
+        status = '200 OK'
+        output = b'Erys Python service is running, but needs post data to do anything useful.\n'
 
-    #start_response('200 OK', [('Content-Type', 'text/html')])
-    #return [html]
+        response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
+        start_response(status, response_headers)
+        return [output]
     
 def initialise(post):
     #print('Initialising activity')
@@ -133,12 +138,21 @@ def noteeval(code, resetpickle, picklefile, workingdir):
         old_stderr = sys.stderr
         redir_err = sys.stderr = StringIO()
         
-        # look at https://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout for timeout
+        # Using https://pypi.org/project/func-timeout/ to timeut infinite loops
+        # Look at os.setuid(uid) for using a different user (needs a pool, and copying files...) 
+        # https://docs.python.org/3/library/os.html#os.setuid
         # Probably will take a bit of testing...
         if environment['__runcount']  == 0:
             exec("import matplotlib\nmatplotlib.use('Agg')\n", environment)
 
-        exec(code, environment)
+        try:
+            func_timeout(5, exec, args=(code, environment))
+        except FunctionTimedOut:
+            output = ""
+            errors = "Error: Timed out. (Do you have an infinite loop in your code?)"
+            return  (output, errors, environment['__runcount'])
+            
+       # exec(code, environment)
 
         sys.stdout = old_stdout
         sys.stderr = old_stderr
@@ -178,7 +192,7 @@ def noteeval(code, resetpickle, picklefile, workingdir):
 #if __name__ == '__main__':
  #   try:
  #       from wsgiref.simple_server import make_server
- #       httpd = make_server('', 8080, app)
+ #       httpd = make_server('', 8080, application)
  #       print('Serving on port 8080...')
  #       httpd.serve_forever()
  #   except KeyboardInterrupt:

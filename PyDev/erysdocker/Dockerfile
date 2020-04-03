@@ -18,6 +18,7 @@ RUN pip3 install matplotlib
 RUN pip3 install pandas
 RUN pip3 install gmplot
 RUN pip3 install IPython
+RUN pip3 install func-timeout
 RUN apt-get install libapache2-mod-wsgi-py3
 
 ADD erys.py /var/www/html/erys.py

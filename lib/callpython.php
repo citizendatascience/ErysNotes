@@ -65,7 +65,7 @@ function runCell($activityID, $userID, $source, $imgretrieve=false)
     } catch(Exception $e) {
         $result = json_encode(array('errors'=>'Caught exception: ' . $e->getMessage() . ' when attempting to call Python service.', 'output'=>''));
     }
-    if($result == false)
+    if($result === false)
         $result = json_encode(array('errors'=>'No response from Python service, is it running?', 'output'=>''));
     return $result;
 }
