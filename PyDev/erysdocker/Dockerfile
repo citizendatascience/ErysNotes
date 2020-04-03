@@ -31,4 +31,4 @@ RUN chmod 777 /var/www/html
 
 EXPOSE 80
 
-#CMD /usr/sbin/apache2ctl -D FOREGROUND
+CMD /usr/sbin/apache2ctl -D FOREGROUND
