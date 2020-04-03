@@ -67,8 +67,8 @@ def application(environ, start_response):
                         
         jsonString = bytes(json.dumps(jsonData), 'utf-8')
 
-    start_response('200 OK', [('Content-Type', 'application/json')])
-    return [jsonString]
+        start_response('200 OK', [('Content-Type', 'application/json')])
+        return [jsonString]
     else:
         status = '200 OK'
         output = b'Erys Python service is running, but needs post data to do anything useful.\n'

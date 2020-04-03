@@ -72,7 +72,7 @@ def app(environ, start_response):
     else:
         status = '200 OK'
         output = b'Erys Python service is running, but needs post data to do anything useful.\n'
-                response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
+        response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
         start_response(status, response_headers)
         return [output]
         
