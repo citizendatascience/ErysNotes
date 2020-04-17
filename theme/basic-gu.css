@@ -265,3 +265,16 @@ Complimentary colours are #0E8258 #73820E #820E39
     margin-bottom: 5px;
 }
 
+@media only screen and (max-width: 1100px) {
+
+    #leftOuter {
+        width: 10px;
+        min-width: 0px;
+        max-width: 20px;
+    }
+
+    #pageHeader {
+    background: none;
+}
+
+}

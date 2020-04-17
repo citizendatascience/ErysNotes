@@ -1059,11 +1059,21 @@ function nb_outlineControls(ctrlsNode, isRoot, config)
 
         this.enableAdd(true);
 
+        if (this.config.custombuttons != undefined)
+        {
+            for(button in this.config.custombuttons)
+            {
+                this.createCtrlButton(button, this.config.custombuttons[button]);
+            }
+        }
+
     }
     //#endregion
     this.blockSettings = document.createElement('span');
     this.blockSettings.id = '_blockSettings';
     this.ctrlsNode.appendChild(this.blockSettings);
+    if (this.config.hidden.blockSettings == true)
+        this.blockSettings.style.display = 'none';
 
     this.setSettingsSel = function(selectors) {
         this.blockSettings.innerHTML = selectors;
@@ -1111,6 +1121,7 @@ function nb_OutlineRoot(rootid, readonly, ctrlsid, config)
         this.enableEdit(false);
     }
     this.editors = [];
+    this.contentClasses = [];
     this.defaultEditor = new nb_outlineBlocktypeBase();
     this.defaultChild = '';
 

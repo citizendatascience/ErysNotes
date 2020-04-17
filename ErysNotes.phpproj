@@ -28,6 +28,7 @@
   <ItemGroup>
     <Compile Include="ajax\callpython_service.php" />
     <Compile Include="ajax\md2html_service.php" />
+    <Compile Include="ajax\downloadNotebook.php" />
     <Compile Include="ajax\saveNotebook.php" />
     <Compile Include="corelib\lti.php" />
     <Compile Include="index.php" />

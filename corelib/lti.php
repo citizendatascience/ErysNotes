@@ -89,7 +89,6 @@ class ltiSession
         else
         {
             $error = "LTI signature mismatch.";
-
         	return false;
         }
     }
@@ -332,61 +331,61 @@ function rfc3986encode($input)
 //xdef2 can be used to generate PHP or Java classes for an XML file.
 
 element imsx_POXEnvelopeRequest
-attributes 
+attributes
 content imsx_POXHeader, imsx_POXBody
 
 element imsx_POXBody
-attributes 
+attributes
 content readResultRequest?, replaceResultResponse?, replaceResultRequest?, deleteResultResponse?, readResultResponse?
 
 element imsx_POXHeader
-attributes 
+attributes
 content imsx_POXResponseHeaderInfo?, imsx_POXRequestHeaderInfo?
 
 element readResultRequest
-attributes 
+attributes
 content resultRecord
 
 element replaceResultRequest
-attributes 
+attributes
 content resultRecord
 
 element imsx_POXRequestHeaderInfo
-attributes 
+attributes
 content imsx_version, imsx_messageIdentifier as string
 
 element resultRecord
-attributes 
+attributes
 content result/resultScore, sourcedGUID
 
 element sourcedGUID
-attributes 
+attributes
 content sourcedId as string
 
 element resultScore
-attributes 
+attributes
 content textString as float, language as string
 
 element imsx_POXEnvelopeResponse
-attributes 
+attributes
 content imsx_POXBody, imsx_POXHeader
 
 element replaceResultResponse
-attributes 
+attributes
 
 element deleteResultResponse
-attributes 
+attributes
 
 element readResultResponse
-attributes 
+attributes
 content result/resultScore
 
 element imsx_POXResponseHeaderInfo
-attributes 
+attributes
 content imsx_version as string, imsx_messageIdentifier as string, imsx_statusInfo
 
 element imsx_statusInfo
-attributes 
+attributes
 content imsx_codeMajor as string, imsx_description as string, imsx_severity as string, imsx_messageRefIdentifier as string, imsx_operationRefIdentifier as string
 */
 
