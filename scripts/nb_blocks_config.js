@@ -77,6 +77,8 @@ config.custombuttons = {
         config.hidden = {
             add: true,
             addsibling: true,
+            up: true,
+            down: true,
             left: true,
             right: true,
             comment: true,
