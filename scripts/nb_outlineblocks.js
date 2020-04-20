@@ -286,6 +286,34 @@ function nb_outlineBlocksBase()
         //#endGenCode
         // #endregion
 
+        nb_outlineBlocksBase.selectNextBlock = function (e)
+        {
+            thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
+            if (thisBlk != undefined)
+            {
+                //USERCODE-SECTION-buttonclicked-down
+                parentBlk = nb_outlineBlocksBase.blockLookup[thisBlk.parentID];
+                if (document.getElementById(thisBlk.id).nextSibling != undefined)
+                    nb_outlineBlocksBase.selectBlock(document.getElementById(thisBlk.id).nextSibling.id);
+
+                //ENDUSERCODE-SECTION-buttonclicked-down
+            }
+        }
+
+        nb_outlineBlocksBase.selectPrevBlock = function (e)
+        {
+            thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
+            if (thisBlk != undefined)
+            {
+                //USERCODE-SECTION-buttonclicked-down
+                parentBlk = nb_outlineBlocksBase.blockLookup[thisBlk.parentID];
+                if (document.getElementById(thisBlk.id).previousSibling != undefined)
+                    nb_outlineBlocksBase.selectBlock(document.getElementById(thisBlk.id).previousSibling.id);
+
+                //ENDUSERCODE-SECTION-buttonclicked-down
+            }
+        }
+
         nb_outlineBlocksBase.selectClickedBlock = function (e)
         {
             nb_outlineBlocksBase.selectBlock(e.currentTarget.id);

@@ -46,29 +46,33 @@
         alert("Unable to save and download. (blockeditor is undefined.)");
     }
 }
+
 fullreset = function (e)
 {
-    alert("Fullreset needs implemented.");
+    if(confirm("Reset will delete any changes you have made to this notebook. Are you sure you want to continue?"))
+    {
+        window.location = "index.php?reset=true";
+    }
 }
 
 var config = {};
 config.buttons = {
-    save: "<img src='ErysIcons/save.png' alt='Save'>",
-        down: "<img src='ErysIcons/down.png' alt='Move Down'>",
-up: "<img src='ErysIcons/up.png' alt='Move Up' title='Move section up'>",
-left: "<img src='ErysIcons/left.png' alt='Move Left'>",
-right: "<img src='ErysIcons/Right.png' alt='Move Right'>",
-add: "<img src='ErysIcons/addchild.png' alt='Add child block'>",
-addsibling: "<img src='ErysIcons/add.png' alt='Add block'>",
-remove: "<img src='ErysIcons/delete.png' alt='Delete block'>",
-edit: "<img src='ErysIcons/edit.png' alt='Edit'>",
-comment: "<img src='ErysIcons/dstop.png' alt='Comment'>",
-expand: "<img src='ErysIcons/dstop.png' alt='Expand'>",
-collapse: "<img src='ErysIcons/dstop.png' alt='Collapse'>",
-cancel: "<img src='ErysIcons/dstop.png' alt='Cancel'>",
-done: "<img src='ErysIcons/run.png' alt='Run'>",
-download: "<img src='ErysIcons/download.png' alt='Download Jupyter notebook'>",
-reset: "<img src='ErysIcons/fullreset.png' alt='Reset notebook, losing all changes'>", 
+    save: "<img src='ErysIcons/save.png' alt='Save' title='Save'>",
+    down: "<img src='ErysIcons/down.png' alt='Move Down' title='Move Down'>",
+    up: "<img src='ErysIcons/up.png' alt='Move Up' title='Move Up' title='Move section up'>",
+    left: "<img src='ErysIcons/left.png' alt='Move Left' title='Move Left'>",
+    right: "<img src='ErysIcons/Right.png' alt='Move Right' title='Move Right'>",
+    add: "<img src='ErysIcons/addchild.png' alt='Add child block' title='Add child block'>",
+    addsibling: "<img src='ErysIcons/add.png' alt='Add block' title='Add block'>",
+    remove: "<img src='ErysIcons/delete.png' alt='Delete block' title='Delete block'>",
+    edit: "<img src='ErysIcons/edit.png' alt='Edit' title='Edit'>",
+    comment: "<img src='ErysIcons/dstop.png' alt='Comment' title='Comment'>",
+    expand: "<img src='ErysIcons/dstop.png' alt='Expand' title='Expand'>",
+    collapse: "<img src='ErysIcons/dstop.png' alt='Collapse' title='Collapse'>",
+    cancel: "<img src='ErysIcons/dstop.png' alt='Cancel' title='Cancel'>",
+    done: "<img src='ErysIcons/run.png' alt='Run' title='Run'>",
+    download: "<img src='ErysIcons/download.png' alt='Download Jupyter notebook' title='Download Jupyter notebook'>",
+    reset: "<img src='ErysIcons/fullreset.png' alt='Reset notebook, losing all changes' title='Reset notebook, losing all changes'>",
 }
 config.custombuttons = {
     download: download,
@@ -103,3 +107,17 @@ blockeditor.Save = function ()
 //blockeditor.contentClasses = contentClasses;
 blockeditor.unserialize(content);
 
+shortcut.add("Shift+Enter", function ()
+{
+    nb_outlineBlocksBase.doneClicked();
+});
+
+
+shortcut.add("Shift+Down", function ()
+{
+    nb_outlineBlocksBase.selectNextBlock();
+});
+shortcut.add("Shift+Up", function ()
+{
+    nb_outlineBlocksBase.selectPrevBlock();
+});

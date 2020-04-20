@@ -1,17 +1,18 @@
 <?php
 require_once('../config.php');
-include_once('../corelib/lti.php');
+include_once('../corelib/lti.php'); 
 include_once('../lib/minimalSecretManager.php');
 include_once('../lib/callpython.php');
 
 $userinfo = checkLTISession($errorMsg);
+if(!isset($userinfo->params['oauth_consumer_key']))
+    exit(json_encode(array('alert'=>'Failed to load session - possibly browser security settings have blocked this.')));
 $projectID = md5($userinfo->params['oauth_consumer_key'].':'.$userinfo->params['resource_link_id']);
 $userID = md5($userinfo->params['user_id']);
 $userRoot = $CFG['datadir'].'/'.$projectID.'/'.$userID .'/';
 
 $status = unserialize(file_get_contents($userRoot.'status.ser'));
 //$status = array('last_run'=>-1, 'plibname'=>"matplotlib\\.pyplot", 'imgnum'=>1);
-
 
 $output = array();
 

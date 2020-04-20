@@ -21,6 +21,7 @@ $_SESSION['userID'] = $userID;
 $template->addScript('scripts/ace/ace.js');
 $template->addScript('scripts/ajax.js');
 $template->addScript('scripts/nb_outlineblocks.js');
+$template->addScript('scripts/shortcut.js');
 $template->addScript('scripts/ErysBlocks.js');
 
 //echo "$projectID $userID";
@@ -146,7 +147,7 @@ function GetLearnerView($projectID, $userID, &$pageData)
         file_put_contents($userRoot.'status.ser', serialize($status));
     }
     //Refactor to be a single call to initialisePython
-    if(($nb)&&(!file_exists($userRoot.$nb)))
+    if(($nb)&&((!file_exists($userRoot.$nb))||(isset($_REQUEST['reset']))))
     {
         copy($projFilesRoot.$nb, $userRoot.$nb);
     }

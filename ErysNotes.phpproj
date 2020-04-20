@@ -18,6 +18,9 @@
     <PHPDevHostName>localhost</PHPDevHostName>
     <PHPDevAutoPort>false</PHPDevAutoPort>
     <PHPDevPort>8000</PHPDevPort>
+    <IISProjectUrl>http://localhost:8002/</IISProjectUrl>
+    <IISExpressSslEnabled>false</IISExpressSslEnabled>
+    <IISExpressSecurePort>44300</IISExpressSecurePort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -1770,6 +1773,7 @@
     <Content Include="scripts\ErysBlocks.js" />
     <Content Include="scripts\nb_blocks_config.js" />
     <Content Include="scripts\nb_outlineblocks.js" />
+    <Content Include="scripts\shortcut.js" />
     <Content Include="theme\blocks.css" />
   </ItemGroup>
 </Project>
