@@ -2,16 +2,14 @@
 function processMarkdown(fromID, toID)
 {
     var senddata = {markdown: document.getElementById(fromID).value, target: toID };
-    var root = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
-    var url = root + "ajax/md2html_service.php";
+    var url = "ajax/md2html_service.php";
     ajaxAction(url, senddata);
 }
 
 function processPython(fromID, pyidx, source)
 {
     var senddata = { id: fromID, pyidx: pyidx, source: source };
-    var root = document.location.href.substring(0, document.location.href.lastIndexOf('/')+1);
-    var url = root + "ajax/callpython_service.php";
+    var url = "ajax/callpython_service.php";
     ajaxAction(url, senddata);
 }
 

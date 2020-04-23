@@ -19,7 +19,7 @@ if(isset($_REQUEST['launch']))
     $ltidata["launch_presentation_return_url"] = $thispoint;
     $endpoint = substr($thispoint, 0, strrpos($thispoint, '/')) . '/index.php';
 
-    //Temp
+    //Temp 
     $ltidata["resource_link_id"] = $resource->id;
     $ltidata["resource_link_title"] = $resource->title;
     $ltidata["resource_link_description"] = $resource->description;
@@ -55,7 +55,7 @@ else
         if((isset($_REQUEST['action']))&&($_REQUEST['action']=='addresource')&&($_REQUEST['context']==$i))
         {
             echo "<h4>New resource</h4><form><input type='hidden' name='action' value='addresource2'/><input type='hidden' name='context' value='$i'/>";
-            echo "Resource title: <input type='text' name='title'/> Description: <input type='text' name='description'/>";
+            echo "Resource title: <input type='text' name='title'/> Description: <input type='text' name='description'/>";   
             echo '<input type="submit" name="s" value="Add"/></form>';
         }
         else
@@ -65,7 +65,7 @@ else
     }
 
     echo '<h3>New context</h3><form><input type="hidden" name="action" value="addcontext"/>';
-    echo "Context name: <input type='text' name='name'/> Context label: <input type='text' name='label'/> ID: <input type='text' name='id'/>";
+    echo "Context name: <input type='text' name='name'/> Context label: <input type='text' name='label'/> ID: <input type='text' name='id'/>";   
     echo '<input type="submit" name="s" value="Add"/></form>';
 }
 
@@ -134,7 +134,7 @@ function rfc3986encode($input)
 function getRequestURL()
 {
 	$pageURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
-	if (($_SERVER["SERVER_PORT"] != "80")&&($_SERVER["SERVER_PORT"] != "443"))
+	if ($_SERVER["SERVER_PORT"] != "80")
 	{
 	    $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["SCRIPT_NAME"];
 	}
@@ -200,7 +200,7 @@ function showUserSelect($show=true)
         else
         {
             echo '<input type="hidden" name="action" value="adduser"/>';
-            echo "New user name: <input type='text' name='name'/> Role: <input type='text' name='role'/>";
+            echo "New user name: <input type='text' name='name'/> Role: <input type='text' name='role'/>";   
         }
         echo '<input type="submit" name="s" value="Set"/></form>';
     }

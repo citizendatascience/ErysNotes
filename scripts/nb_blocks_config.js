@@ -4,31 +4,34 @@
     {
         var senddata = { notebook: blockeditor.serialize() };
         var url = "ajax/downloadNotebook.php";
-
-        //#TODO Refactor to use 
-        //ajaxAction(url, senddata);
-        //# and add a "download" option to processAjaxResponse.js with the link bit below.
-        //# Also needs changes to downloadNotebook.php to fit that (nicer) approach.
-
         // Based on https://nehalist.io/downloading-files-from-post-requests/
 
         var request = new XMLHttpRequest();
         request.open('POST', url, true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.responseType = 'blob';
 
-        request.onreadystatechange = function ()
+        request.onload = function ()
         {
-            if (request.readyState == 4)
+            // Only handle status code 200
+            if (request.status === 200)
             {
-                if(request.status == 200)
-                {
-                    // Try to find out the filename from the content disposition `filename` value
+                // Try to find out the filename from the content disposition `filename` value
+                var disposition = request.getResponseHeader('content-disposition');
+                var matches = /"([^"]*)"/.exec(disposition);
+                var filename = (matches != null && matches[1] ? matches[1] : 'file.ipynb');
 
-                    var link = document.createElement('a');
-                    link.href = url;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
+                // The actual download
+                var blob = new Blob([request.response], { type: 'application/x-ipynb+json' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                document.body.removeChild(link);
             }
 
             // some error handling should be done here...
@@ -68,7 +71,7 @@ config.buttons = {
     collapse: "<img src='ErysIcons/dstop.png' alt='Collapse' title='Collapse'>",
     cancel: "<img src='ErysIcons/dstop.png' alt='Cancel' title='Cancel'>",
     done: "<img src='ErysIcons/run.png' alt='Run' title='Run'>",
-    download: "<img src='ErysIcons/download.png' alt='Save and then download Jupyter notebook' title='Save and then download Jupyter notebook'>",
+    download: "<img src='ErysIcons/download.png' alt='Download Jupyter notebook' title='Download Jupyter notebook'>",
     reset: "<img src='ErysIcons/fullreset.png' alt='Reset notebook, losing all changes' title='Reset notebook, losing all changes'>",
 }
 config.custombuttons = {
