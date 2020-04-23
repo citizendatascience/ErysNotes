@@ -286,34 +286,6 @@ function nb_outlineBlocksBase()
         //#endGenCode
         // #endregion
 
-        nb_outlineBlocksBase.selectNextBlock = function (e)
-        {
-            thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
-            if (thisBlk != undefined)
-            {
-                //USERCODE-SECTION-buttonclicked-down
-                parentBlk = nb_outlineBlocksBase.blockLookup[thisBlk.parentID];
-                if (document.getElementById(thisBlk.id).nextSibling != undefined)
-                    nb_outlineBlocksBase.selectBlock(document.getElementById(thisBlk.id).nextSibling.id);
-
-                //ENDUSERCODE-SECTION-buttonclicked-down
-            }
-        }
-
-        nb_outlineBlocksBase.selectPrevBlock = function (e)
-        {
-            thisBlk = nb_outlineBlocksBase.blockLookup[nb_outlineBlocksBase.selectedBlock];
-            if (thisBlk != undefined)
-            {
-                //USERCODE-SECTION-buttonclicked-down
-                parentBlk = nb_outlineBlocksBase.blockLookup[thisBlk.parentID];
-                if (document.getElementById(thisBlk.id).previousSibling != undefined)
-                    nb_outlineBlocksBase.selectBlock(document.getElementById(thisBlk.id).previousSibling.id);
-
-                //ENDUSERCODE-SECTION-buttonclicked-down
-            }
-        }
-
         nb_outlineBlocksBase.selectClickedBlock = function (e)
         {
             nb_outlineBlocksBase.selectBlock(e.currentTarget.id);
@@ -322,8 +294,7 @@ function nb_outlineBlocksBase()
 
         nb_outlineBlocksBase.editClickedBlock = function (e)
         {
-            if ((nb_outlineBlocksBase.blockLookup[e.currentTarget.id].id == nb_outlineBlocksBase.selectedBlock)&&
-                (!nb_outlineBlocksBase.blockLookup[e.currentTarget.id].controls.editBtn.disabled))
+            if (nb_outlineBlocksBase.blockLookup[e.currentTarget.id].id == nb_outlineBlocksBase.selectedBlock)
             {
                 nb_outlineBlocksBase.blockLookup[e.currentTarget.id].editStart();
                 nb_outlineBlocksBase.blockLookup[e.currentTarget.id].controls.enableCancel(true);
@@ -1088,21 +1059,13 @@ function nb_outlineControls(ctrlsNode, isRoot, config)
 
         this.enableAdd(true);
 
-        if (this.config.custombuttons != undefined)
-        {
-            for(button in this.config.custombuttons)
-            {
-                this.createCtrlButton(button, this.config.custombuttons[button]);
-            }
-        }
-
     }
     //#endregion
     this.blockSettings = document.createElement('span');
     this.blockSettings.id = '_blockSettings';
     this.ctrlsNode.appendChild(this.blockSettings);
     if (this.config.hidden.blockSettings == true)
-        this.blockSettings.style.display = 'none';
+        this.blockSettings.style.display == none;
 
     this.setSettingsSel = function(selectors) {
         this.blockSettings.innerHTML = selectors;
