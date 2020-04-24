@@ -58,7 +58,7 @@ config.buttons = {
     down: "<img src='ErysIcons/down.png' alt='Move Down' title='Move Down'>",
     up: "<img src='ErysIcons/up.png' alt='Move Up' title='Move Up' title='Move section up'>",
     left: "<img src='ErysIcons/left.png' alt='Move Left' title='Move Left'>",
-    right: "<img src='ErysIcons/Right.png' alt='Move Right' title='Move Right'>",
+    right: "<img src='ErysIcons/right.png' alt='Move Right' title='Move Right'>",
     add: "<img src='ErysIcons/addchild.png' alt='Add child block' title='Add child block'>",
     addsibling: "<img src='ErysIcons/add.png' alt='Add block' title='Add block'>",
     remove: "<img src='ErysIcons/delete.png' alt='Delete block' title='Delete block'>",
