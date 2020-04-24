@@ -124,7 +124,7 @@ nb_codeBlock = function ()
         block.outputnode.style.color = '#003300';
 
         block.editor = ace.edit(block.id + "_editor", {
-            theme: "ace/theme/tomorrow_night_eighties",
+            theme: "ace/theme/tomorrow_night",
             mode: "ace/mode/python",
             maxLines: 30,
             minLines: 8,
