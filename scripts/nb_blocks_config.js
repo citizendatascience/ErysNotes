@@ -48,11 +48,25 @@
     }
 }
 
+function inIframe()
+{
+    try
+    {
+        return window.self !== window.top;
+    } catch (e)
+    {
+        return true;
+    }
+}
+
 fullreset = function (e)
 {
     if(confirm("Reset will delete any changes you have made to this notebook. Are you sure you want to continue?"))
     {
-        window.location = "index.php?reset=true";
+        var loc = "index.php?reset=true";
+        if ((inIframe())&&(SID != undefined))
+            loc += '&' + SID;
+        window.location = loc;
     }
 }
 
