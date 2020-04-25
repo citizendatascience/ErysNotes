@@ -22,6 +22,13 @@
 
 function ajaxLinkClick(url)
 {
+    if (SID != undefined)
+    {
+        if (url.indexOf('?') == -1)
+            url += '?' + SID;
+        else
+            url += '&' + SID;
+    }
     document.body.style.cursor = 'wait';
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function ()
@@ -52,6 +59,13 @@ function ajaxLinkClick(url)
 
 function ajaxAction(url, senddata)
 {
+    if (SID != undefined)
+    {
+        if (url.indexOf('?') == -1)
+            url += '?' + SID;
+        else
+            url += '&' + SID;
+    }
     document.body.style.cursor = 'wait';
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function ()

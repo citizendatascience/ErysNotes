@@ -51,7 +51,7 @@ nb_codeBlock = function ()
 
     this.initEdit = function (id, editnode, source)
     {
-        alert(".initEdit code block " + block.id);
+        //alert(".initEdit code block " + block.id);
         //editnode.innerHTML = "Code Override</br><textarea id='" + id + "_editarea' rows='12' style='margin:2px; width:95%'>" +source + "</textarea>";
     }
 

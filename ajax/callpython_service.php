@@ -6,7 +6,7 @@ include_once('../lib/callpython.php');
 
 $userinfo = checkLTISession($errorMsg);
 if(!isset($userinfo->params['oauth_consumer_key']))
-    exit(json_encode(array('alert'=>'Failed to load session - possibly browser security settings have blocked this.')));
+    exit(json_encode(array('alert'=>'Failed to load session - possibly browser security settings have blocked this.'.'<pre>'.print_r($_REQUEST, true).'</pre>')));
 $projectID = md5($userinfo->params['oauth_consumer_key'].':'.$userinfo->params['resource_link_id']);
 $userID = md5($userinfo->params['user_id']);
 $userRoot = $CFG['datadir'].'/'.$projectID.'/'.$userID .'/';

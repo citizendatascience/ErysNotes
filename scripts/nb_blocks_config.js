@@ -4,6 +4,10 @@
     {
         var senddata = { notebook: blockeditor.serialize() };
         var url = "ajax/downloadNotebook.php";
+        if (SID != undefined)
+        {
+                url += '?' + SID;
+        }
 
         //#TODO Refactor to use 
         //ajaxAction(url, senddata);

@@ -163,7 +163,10 @@ function GetLearnerView($projectID, $userID, &$pageData)
         $notebook = new iNotebook(file_get_contents($userRoot.$nb));
         $pageData['toolbar'] = "<div id='blockctrls'></div>";
         $pageData['main'] =  "<div id='blockhost'></div>";
+
         $pageData['scriptStart'] = 'content = '. $notebook->toErysJson() . ';';
+        //To allow non cookie sessions over ajax (To alow Safari + frame launch)
+        $pageData['scriptStart'] .= "\nSID = \"".htmlentities(session_name().'='.session_id())."\";\n";
         $pageData['scriptStart'] .= file_get_contents('scripts/nb_blocks_config.js');
     }
 }
