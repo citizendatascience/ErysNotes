@@ -3,11 +3,11 @@ function checkLTISession(&$errorMsg)
 {
     $secretManager = new minimalSecretManager();
     $errorMsg = false;
-    session_start();
+    session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
 	if((isset($_REQUEST['lti_message_type']))||(!isset($_SESSION['ltisession'])))
     {
 	    session_destroy();
-        session_start();
+        session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
     	$_SESSION['ltisession'] = ltiSession::Create($secretManager, $_POST, $errorMsg);
         //echo'<pre>Session: '.print_r($_SESSION['ltisession'],1).'</pre>';
     }

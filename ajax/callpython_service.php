@@ -1,12 +1,12 @@
 <?php
 require_once('../config.php');
-include_once('../corelib/lti.php'); 
+include_once('../corelib/lti.php');
 include_once('../lib/minimalSecretManager.php');
 include_once('../lib/callpython.php');
 
 $userinfo = checkLTISession($errorMsg);
 if(!isset($userinfo->params['oauth_consumer_key']))
-    exit(json_encode(array('alert'=>'Failed to load session - possibly browser security settings have blocked this.')));
+    exit(json_encode(array('alert'=>'Failed to load session - possibly browser security settings have blocked this.'.'<pre>'.print_r($_REQUEST, true).'</pre>')));
 $projectID = md5($userinfo->params['oauth_consumer_key'].':'.$userinfo->params['resource_link_id']);
 $userID = md5($userinfo->params['user_id']);
 $userRoot = $CFG['datadir'].'/'.$projectID.'/'.$userID .'/';
@@ -34,6 +34,10 @@ foreach($getimages as $img)
 {
     if(isset($result->$img))
         $output[$_REQUEST['id'].'_output'] .= "<div class=\"outputPart display_data\"><div class='image'><img src='data:image/png;base64, {$result->$img}'/></div><!--end-display_data--></div>";
+}
+if((strlen($result->errors)==0)&&(strlen($result->output)==0)&&(sizeof($getimages)==0))
+{
+    $output[$_REQUEST['id'].'_output'] = '<div class="outputPart stream"><span style="color: #008800; font-size:smaller;">Run OK. (No output or errors returned.)</span><!--end-stream--></div>';
 }
 
 file_put_contents($userRoot.'status.ser', serialize($status));

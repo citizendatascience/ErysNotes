@@ -322,7 +322,8 @@ function nb_outlineBlocksBase()
 
         nb_outlineBlocksBase.editClickedBlock = function (e)
         {
-            if (nb_outlineBlocksBase.blockLookup[e.currentTarget.id].id == nb_outlineBlocksBase.selectedBlock)
+            if ((nb_outlineBlocksBase.blockLookup[e.currentTarget.id].id == nb_outlineBlocksBase.selectedBlock)&&
+                (!nb_outlineBlocksBase.blockLookup[e.currentTarget.id].controls.editBtn.disabled))
             {
                 nb_outlineBlocksBase.blockLookup[e.currentTarget.id].editStart();
                 nb_outlineBlocksBase.blockLookup[e.currentTarget.id].controls.enableCancel(true);

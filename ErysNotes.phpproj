@@ -34,6 +34,7 @@
     <Compile Include="ajax\downloadNotebook.php" />
     <Compile Include="ajax\saveNotebook.php" />
     <Compile Include="corelib\lti.php" />
+    <Compile Include="flaunch.php" />
     <Compile Include="index.php" />
     <Compile Include="launch.php" />
     <Compile Include="lib\callpython.php" />
