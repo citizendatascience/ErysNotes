@@ -7,7 +7,6 @@ import cgi
 import json
 import os
 import configparser
-#import urllib.request
 import requests
 import base64
 from func_timeout import func_timeout, FunctionTimedOut
@@ -95,8 +94,10 @@ def initialise(post):
                     os.makedirs(dirpart, exist_ok=True)
                 if not os.path.exists(filename):
                     urltoget = post['urlupload'].value + filename
+                    print('Requesting '+urltoget);
                     result = requests.get(urltoget)
                     open(filename, 'wb').write(result.content)
+                    print('Got it!');
 
         except Exception as e:
             print("Error: " + str(e))

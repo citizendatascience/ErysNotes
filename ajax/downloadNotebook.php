@@ -5,6 +5,8 @@ include_once('../lib/minimalSecretManager.php');
 include_once('../lib/callpython.php');
 include_once('../lib/iNotebook.php');
 
+if(session_status()==PHP_SESSION_NONE)
+    session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
 $userinfo = checkLTISession($errorMsg);
 $projectID = md5($userinfo->params['oauth_consumer_key'].':'.$userinfo->params['resource_link_id']);
 $userID = md5($userinfo->params['user_id']);

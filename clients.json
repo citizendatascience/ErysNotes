@@ -1,0 +1,13 @@
+{
+    "31f5767cd74b2b89b6f84d5d4a6ba319c9691638": {
+        "platformID": "http:\/\/moodlebox.home",
+        "clientID": "YbpPemKDoAJfEFN",
+        "deploymentID": "5",
+        "publicKeysetURL": "http:\/\/moodlebox.home\/mod\/lti\/certs.php",
+        "accessTokenURL": "http:\/\/moodlebox.home\/mod\/lti\/token.php",
+        "authenticationURL": "http:\/\/moodlebox.home\/mod\/lti\/auth.php",
+        "cachedPublicKeys": {
+            "79ceb12a8b0c022127eb": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxmvQ2CnGH7PSgbbiBzKR\n8gkiVBsREeFSIRMgE6VHihjYFiNhQtm6MHMu54elWkFhCxyvbP\/AD6REYYXmMVSM\nby8k+RnQkDDDZX4QgGMZ6zSaTyFJFMTb65CZADtAmW1mWw0oPdCMvXaMmq\/u1FQT\nIpHkKqbZEGuhQhFAB10o\/3uP+5wLUY4VVUPQC5D+vTouCcGmts0yxFqCXjTtgx5T\nQ2vjgB\/+mB2Bgiieoc+kMndZMJXJtre71u1\/O1\/V39EH8m6GvFD39R2dmpSs1kR3\n6Yzd6V7FXrCED2tFlW8KbHHMYZcobNUt3QpZK0SBaiOnJ9PaVO93RCHmQmasQM3D\nLQIDAQAB\n-----END PUBLIC KEY-----"
+        }
+    }
+}

@@ -4,6 +4,8 @@ include_once('../corelib/lti.php');
 include_once('../lib/minimalSecretManager.php');
 include_once('../lib/callpython.php');
 
+if(session_status()==PHP_SESSION_NONE)
+    session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
 $userinfo = checkLTISession($errorMsg);
 if(!isset($userinfo->params['oauth_consumer_key']))
     exit(json_encode(array('alert'=>'Failed to load session - possibly browser security settings have blocked this.'.'<pre>'.print_r($_REQUEST, true).'</pre>')));

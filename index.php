@@ -4,14 +4,37 @@ require_once('corelib/templateMerge.php');
 require_once('lib/md2html.php');
 require_once('lib/iNotebook.php');
 include_once('corelib/lti.php');
+include_once('corelib/ltia.php');
 include_once('lib/minimalSecretManager.php');
 include_once('lib/forms.php');
 include_once('lib/callpython.php');
 
-$userinfo = checkLTISession($errorMsg);
-if($userinfo == false)
-    exit("LTI Launch failed.<br/>$errorMsg");
+session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
 
+//if((isset($_REQUEST['login_hint']))||(isset($_REQUEST['id_token']))||(isset($_REQUEST['lti_message_type']))||(!isset($_SESSION['ltisession'])))
+//{
+    if((isset($_REQUEST['login_hint']))||(isset($_REQUEST['id_token'])))
+    {
+        $clientManager = new simpleClientManager($LTI['clientfilepath']);
+        $userinfo = checkLTIASession($clientManager);
+        if($userinfo != false)
+        {
+            $_SESSION['ltisession'] = $userinfo;
+        }
+        else
+            $errorMsg = 'Not launched...';
+    }
+    else
+        $userinfo = checkLTISession($errorMsg);
+//}
+
+
+//exit('<pre>'.print_r($userinfo, true).'</pre>');
+
+if($userinfo == false)
+{
+    exit("LTI Launch failed.<br/>{$errorMsg}<p><a href='clientEdit.php'>Add/update LTI clients</a>");
+}
 $template = new templateMerge('theme/template2.html');
 
 $projectID = md5($userinfo->params['oauth_consumer_key'].':'.$userinfo->params['resource_link_id']);
@@ -29,6 +52,9 @@ if(strpos($userinfo->params['roles'], 'Instructor')!==false)
     GetInstructorView($projectID, $userID,  $template->pageData);
 else
     GetLearnerView($projectID, $userID,  $template->pageData);
+
+if(file_exists('privacynotice.html'))
+    $template->pageData['leftFull'].= "<p><a href='privacynotice.html' target='_new'>Privacy Notice</a></p>";
 
 //if(error_get_last() == null)
     echo $template->render();

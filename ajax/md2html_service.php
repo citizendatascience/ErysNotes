@@ -4,6 +4,8 @@ include('../lib/md2html.php');
 include_once('../corelib/lti.php');
 include_once('../lib/minimalSecretManager.php');
 
+if(session_status()==PHP_SESSION_NONE)
+    session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
 $userinfo = checkLTISession($errorMsg);
 
 $imageBaseURL = $CFG['imgroot'].'/'.$_SESSION['projectID'].'/';

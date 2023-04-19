@@ -11,8 +11,7 @@
     <SpecificPageValue>launch.php</SpecificPageValue>
     <StartAction>SpecificPage</StartAction>
     <ProjectHome />
-    <Runtime>PHP</Runtime>
-    <RuntimeVersion>7.1</RuntimeVersion>
+    <RuntimeVersion>7.0</RuntimeVersion>
     <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
     <EnvName>PHPDev</EnvName>
     <PHPDevHostName>localhost</PHPDevHostName>
@@ -33,7 +32,9 @@
     <Compile Include="ajax\md2html_service.php" />
     <Compile Include="ajax\downloadNotebook.php" />
     <Compile Include="ajax\saveNotebook.php" />
+    <Compile Include="clientEdit.php" />
     <Compile Include="corelib\lti.php" />
+    <Compile Include="corelib\ltia.php" />
     <Compile Include="flaunch.php" />
     <Compile Include="index.php" />
     <Compile Include="launch.php" />
@@ -1389,6 +1390,7 @@
     <Folder Include="src" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients.json" />
     <Content Include="lib\defaultRules.txt" />
     <Content Include="scripts\ace\ace.js" />
     <Content Include="scripts\ace\ext-beautify.js" />

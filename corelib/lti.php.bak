@@ -3,10 +3,10 @@ function checkLTISession(&$errorMsg)
 {
     $secretManager = new minimalSecretManager();
     $errorMsg = false;
-    //session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]); // Moved to index to support both LTI and LTIA
+    //session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]); // Moved to index to support bith LTI and LTIA
 	if((isset($_REQUEST['lti_message_type']))||(!isset($_SESSION['ltisession'])))
     {
-	    @session_destroy();
+	    session_destroy();
         session_start(['use_only_cookies'=>0,'use_trans_sid'=>1]);
     	$_SESSION['ltisession'] = ltiSession::Create($secretManager, $_POST, $errorMsg);
         //echo'<pre>Session: '.print_r($_SESSION['ltisession'],1).'</pre>';
@@ -299,12 +299,12 @@ function do_post_request($url, $data, $optional_headers = null)
 	$fp = @fopen($url, 'rb', false, $ctx);
 	if (!$fp)
     {
-		throw new Exception("Problem with $url, ".error_get_last()['message']);
+		throw new Exception("Problem with $url, $php_errormsg");
 	}
 	$response = @stream_get_contents($fp);
 	if ($response === false)
     {
-		throw new Exception("Problem reading data from $url, ".error_get_last()['message']);
+		throw new Exception("Problem reading data from $url, $php_errormsg");
 	}
 	return $response;
 }
@@ -496,7 +496,6 @@ class cls_statusinfo //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -550,7 +549,6 @@ class cls_memberships //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -631,7 +629,6 @@ class cls_member //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -781,7 +778,6 @@ class cls_imsx_POXBody //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -856,7 +852,6 @@ class cls_imsx_POXHeader //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -912,7 +907,6 @@ class cls_readResultRequest //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -961,7 +955,6 @@ class cls_replaceResultRequest //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1015,7 +1008,6 @@ class cls_imsx_POXRequestHeaderInfo //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1072,7 +1064,6 @@ class cls_resultRecord //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1122,7 +1113,6 @@ class cls_sourcedGUID //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1177,7 +1167,6 @@ class cls_resultScore //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1288,7 +1277,6 @@ class cls_replaceResultResponse //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1331,7 +1319,6 @@ class cls_deleteResultResponse //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1379,7 +1366,6 @@ class cls_readResultResponse //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1438,7 +1424,6 @@ class cls_imsx_POXResponseHeaderInfo //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
@@ -1511,7 +1496,6 @@ class cls_imsx_statusInfo //extends
 
     function toXML($neat=false, $indent=0)
     {
-        $out = '';
         if($neat)
         {
             $pad = str_repeat('    ',$indent);
